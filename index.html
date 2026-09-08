@@ -848,6 +848,12 @@
     formEndpoint:    'https://formsubmit.co/ajax/info@berisabau.de',
     googleAdsId:     'AW-18326204248',       // Google Ads Conversion-ID
     conversionLabel: 'dkNlCKmz-OQcENjezqJE', // Label der Conversion-Aktion
+    ga4Id:           'G-G6RT5FR44V',         // Google Analytics 4, dieselbe
+                                             // Property wie berisabau.de. Ohne
+                                             // das ist diese Seite fuer
+                                             // Analytics unsichtbar, obwohl
+                                             // die ganze Mikrozement-Werbung
+                                             // hierher zeigt.
 
     /* Sofort-Meldung per WhatsApp (google-ads/worker).
        Beide Felder leer lassen = ausgeschaltet, dann ändert sich nichts.
@@ -896,6 +902,7 @@
     s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id='+CONFIG.googleAdsId;
     document.head.appendChild(s);
     gtag('config', CONFIG.googleAdsId);
+    if(CONFIG.ga4Id){ gtag('config', CONFIG.ga4Id); }
   }
   function grantConsent(){
     gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});

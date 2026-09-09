@@ -74,7 +74,10 @@
   .badge-top .dot{width:8px;height:8px;border-radius:50%;background:#38d17a;box-shadow:0 0 0 4px rgba(56,209,122,.2)}
   .phone{display:flex;align-items:center;gap:8px;color:#fff;font-family:var(--head);font-weight:700;font-size:18px;letter-spacing:.5px}
   .phone svg{width:18px;height:18px;fill:var(--red-2)}
-  @media(max-width:760px){.badge-top{display:none}.phone span{display:none}.brand img{height:40px}}
+  /* Der Ortsbezug hat im Handy-Kopf keinen Platz - er steht dort als
+     eigene Zeile im Kopfbereich (.ortzeile). Die Rufnummer bleibt
+     sichtbar: sie ist am Handy die schnellste Handlung ueberhaupt. */
+  @media(max-width:760px){.badge-top{display:none}.brand img{height:40px}}
 
   /* hero */
   .hero{position:relative;min-height:100vh;display:flex;align-items:center;color:#fff;overflow:hidden;
@@ -213,14 +216,43 @@
 
   /* footer */
   footer{background:#07070a;color:rgba(255,255,255,.7);padding:60px 0 30px}
-  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1.1fr .8fr 1fr;gap:40px;margin-bottom:40px}
   footer .brand img{height:48px;margin-bottom:16px}
   footer h4{font-family:var(--head);color:#fff;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
   footer p,footer a{font-size:14.5px;line-height:1.9}
   footer a:hover{color:#fff}
   .foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px;color:rgba(255,255,255,.5)}
   .foot-bottom a{margin-left:18px}
-  @media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:28px}}
+  /* Einsatzgebiet: Staedteliste mit Aufklapper */
+  .staedte{list-style:none;display:grid;gap:2px;margin:0}
+  .staedte li{font-size:14.5px;line-height:1.9}
+  .staedte-mehr{margin-top:10px}
+  .staedte-mehr summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+                        font-size:14px;font-weight:500;color:#fff;padding:6px 0}
+  .staedte-mehr summary::-webkit-details-marker{display:none}
+  /* Der Pfeil dreht sich beim Aufklappen - das ist der ganze Hinweis,
+     den es braucht, dass hier etwas passiert und nichts wegfuehrt. */
+  .staedte-mehr summary::after{content:"";width:7px;height:7px;flex:none;
+       border-right:2px solid var(--red-2);border-bottom:2px solid var(--red-2);
+       transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s ease}
+  .staedte-mehr[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+  .staedte-mehr summary:hover{color:var(--red-2)}
+  .staedte-mehr .zu{display:none}
+  .staedte-mehr[open] .auf{display:none}
+  .staedte-mehr[open] .zu{display:inline}
+  /* Beim Oeffnen faehrt die Liste auf, statt zu springen. <details> gibt
+     den Inhalt erst frei, wenn es offen ist - deshalb eine Animation beim
+     Oeffnen statt einer Transition in beide Richtungen. */
+  .staedte-mehr[open] .staedte-rest{animation:aufklappen .28s ease}
+  @keyframes aufklappen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .staedte-rest .staedte{margin-top:4px}
+  footer .zeiten{margin-top:10px;color:rgba(255,255,255,.55);font-size:14px;line-height:1.7}
+
+  @media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr;gap:34px}}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:28px}
+    /* Am Handy stehen Impressum und Datenschutz schon als eigene Spalte
+       "Rechtliches" - unten in der Schlusszeile waeren sie doppelt. */
+    .foot-recht{display:none}}
 
   /* sticky mobile cta */
   .mobile-cta{position:fixed;bottom:0;left:0;right:0;z-index:60;display:none;gap:10px;padding:12px 16px;
@@ -451,12 +483,14 @@
     .lead{margin-bottom:26px}
     .hero-cta{margin-bottom:22px}
 
-    /* Anrufen ist am Handy die zweite Handlung neben dem Formular.
-       Uebrig blieb bisher nur das Symbol - 18x18 px, kein Ziel fuer
-       einen Daumen. Jetzt ein richtiger runder Knopf. */
-    .phone{width:44px;height:44px;justify-content:center;border-radius:50%;
+    /* Anrufen ist am Handy die schnellste Handlung ueberhaupt. Uebrig
+       blieb frueher nur das Symbol - 18x18 px, kein Ziel fuer einen
+       Daumen, und die Nummer stand nirgends. Jetzt ein Knopf mit der
+       vollen Nummer, 44 px hoch wie am Laptop lesbar. */
+    .phone{gap:8px;height:44px;padding:0 15px;border-radius:500px;font-size:16px;
            border:1.5px solid rgba(255,255,255,.30);background:rgba(255,255,255,.07)}
-    .phone svg{width:20px;height:20px}
+    .phone svg{width:17px;height:17px}
+    .nav{gap:10px}
 
     /* Der Scrollhinweis lag ueber den Vertrauenspunkten und sagt
        dasselbe wie der Balken am unteren Rand. */
@@ -550,6 +584,10 @@
   @media(max-width:380px){
     h1{font-size:38px}
     .pill{font-size:12px;padding:8px 13px}
+    /* Logo und Rufnummer muessen zusammen in eine Zeile passen -
+       auf einem iPhone SE sind das 284 px netto. */
+    .brand img{height:34px}
+    .phone{font-size:14.5px;padding:0 11px;gap:6px;letter-spacing:0}
   }
 
 </style>
@@ -969,24 +1007,59 @@
         <a href="#top" class="brand"><img src="assets/logo-red.svg" alt="Berisa Bau Logo" /></a>
         <p>Planung, Renovierung und Sanierung aus einer Hand. Terminsicher und präzise im Wohn-, Gewerbe- und Industriebau.</p>
       </div>
+
+      <!-- Einsatzgebiet. Vier Staedte stehen offen da, der Rest kommt auf
+           Tastendruck dazu - kein neues Fenster, kein Sprung. <details> kann
+           das von Haus aus; das Aufklappen ist rein optisch animiert. Wer
+           gerade in Krefeld sitzt, soll seine Stadt finden, ohne zu suchen. -->
+      <div>
+        <h4>Einsatzgebiet</h4>
+        <ul class="staedte">
+          <li>Mülheim an der Ruhr</li>
+          <li>Duisburg</li>
+          <li>Oberhausen</li>
+          <li>Essen</li>
+        </ul>
+        <details class="staedte-mehr">
+          <summary><span class="auf">Alle 12 Städte anzeigen</span><span class="zu">Weniger anzeigen</span></summary>
+          <div class="staedte-rest">
+            <ul class="staedte">
+              <li>Bottrop</li>
+              <li>Düsseldorf</li>
+              <li>Gelsenkirchen</li>
+              <li>Köln</li>
+              <li>Dortmund</li>
+              <li>Dinslaken</li>
+              <li>Krefeld</li>
+              <li>Velbert</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <div>
+        <h4>Rechtliches</h4>
+        <p><a href="impressum.html">Impressum</a></p>
+        <p><a href="datenschutz.html">Datenschutz</a></p>
+        <!-- AGB: bewusst noch nicht verlinkt. Es gibt keine agb.html - ein
+             Link darauf waere ein 404 auf einer bezahlten Anzeigenseite.
+             Sobald der Text vorliegt: Datei anlegen und diese Zeile
+             einkommentieren.
+        <p><a href="agb.html">AGB</a></p>
+        -->
+      </div>
+
       <div>
         <h4>Kontakt</h4>
         <p><a href="tel:+4915565535408">+49 1556 5535 408</a></p>
         <p><a href="mailto:info@berisabau.de">info@berisabau.de</a></p>
-        <p>Heiermannstr. 5<br>45475 Mülheim an der Ruhr</p>
         <p><a href="https://www.berisabau.de" target="_blank" rel="noopener">www.berisabau.de</a></p>
-      </div>
-      <div>
-        <h4>Mikrozement</h4>
-        <p><a href="#angebot">Fugenlose Dusche</a></p>
-        <p><a href="#angebot">Bad komplett fugenlos</a></p>
-        <p><a href="#angebot">Boden &amp; Wohnraum</a></p>
-        <p><a href="#angebot">Küche &amp; Treppe</a></p>
+        <p class="zeiten">Mo&ndash;Fr 8&ndash;18 Uhr<br>Sa nach Absprache</p>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Berisa Bau · Alle Gewerke aus einer Hand</span>
-      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+      <span>© 2026 Berisa Bau · Heiermannstr. 5, 45475 Mülheim an der Ruhr</span>
+      <span class="foot-recht"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </div>
 </footer>

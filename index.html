@@ -174,6 +174,27 @@
   .consent{display:flex;gap:10px;align-items:flex-start;margin-top:6px;font-size:12.5px;color:rgba(255,255,255,.55)}
   .consent input{margin-top:3px;accent-color:var(--red)}
   .consent a{color:#fff;text-decoration:underline}
+
+  /* Fotos zur Anfrage. Bei einer Treppe, einer Mauer oder einer gedaemmten
+     Fassade sagt ein Bild mehr als drei Saetze Beschreibung — und erspart
+     dem Kunden wie uns eine Rueckfrage vor dem Angebot. */
+  .field label.fotofeld{display:flex;align-items:center;gap:12px;margin:0;padding:14px 16px;
+       border:1.5px dashed var(--line);border-radius:12px;background:rgba(255,255,255,.04);
+       cursor:pointer;transition:.18s}
+  .field label.fotofeld:hover,.field label.fotofeld.ueber{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.09)}
+  .fotofeld svg{width:26px;height:26px;fill:rgba(255,255,255,.75);flex:none}
+  .fotofeld b{display:block;color:#fff;font-size:15px;font-weight:600;line-height:1.3}
+  .fotofeld small{color:rgba(255,255,255,.55);font-size:13px}
+  .fotofeld input{display:none}
+  .fotoliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px;margin-top:12px}
+  .fotoliste:empty{display:none}
+  .fotokachel{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);animation:fade .3s}
+  .fotokachel img{width:100%;height:100%;object-fit:cover;display:block}
+  .fotokachel button{position:absolute;top:4px;right:4px;width:24px;height:24px;padding:0;border:0;border-radius:50%;
+       background:rgba(0,0,0,.7);color:#fff;font-size:16px;line-height:22px;cursor:pointer}
+  .fotokachel button:hover{background:var(--red)}
+  .fotohinweis{margin-top:9px;font-size:12.5px;color:rgba(255,255,255,.5)}
+  .fotohinweis:empty{display:none}
   .trust-mini{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-top:26px}
   .trust-mini .chip{color:rgba(255,255,255,.7)}
   .done{display:none;text-align:center;padding:20px 0}
@@ -748,6 +769,16 @@
             <div class="field"><label>PLZ / Ort*</label><input type="text" name="plz" placeholder="45475 Mülheim" required></div>
           </div>
           <div class="field"><label>Kurz zum Projekt (optional)</label><textarea name="nachricht" rows="2" placeholder="z. B. Bad ca. 8 m², alte Fliesen bleiben, Wunschton grau"></textarea></div>
+          <div class="field">
+            <label>Fotos vom Raum (optional)</label>
+            <label class="fotofeld" id="fotofeld">
+              <svg viewBox="0 0 24 24"><path d="M9 3L7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9zm3 5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zm0 2a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/></svg>
+              <span><b>Foto aufnehmen oder auswählen</b><small>Bis zu 4 Bilder — damit wir gleich richtig rechnen</small></span>
+              <input type="file" id="fotoeingabe" accept="image/*" multiple>
+            </label>
+            <div class="fotoliste" id="fotoliste"></div>
+            <div class="fotohinweis" id="fotohinweis"></div>
+          </div>
           <label class="consent"><input type="checkbox" name="consent" required><span>Ich stimme zu, dass Berisa Bau meine Angaben zur Bearbeitung meiner Anfrage verarbeitet. Es gilt die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
         </div>
 
@@ -1029,6 +1060,96 @@
 
   function shake(el){ el.style.animation='none'; void el.offsetWidth; el.style.animation='fade .3s'; }
 
+  /* ==================================================================
+     Fotos zur Anfrage
+
+     Warum die Bilder im Browser verkleinert werden: Ein heutiges
+     Handyfoto wiegt 3 bis 6 MB. Vier davon ueber Mobilfunk hochzuladen
+     dauert laenger, als irgendein Interessent auf ein Formular wartet.
+     Auf 1600 px lange Kante gerechnet bleiben rund 250 KB uebrig — fuer
+     die Beurteilung eines Raums mehr als genug, und der Upload ist in
+     ein paar Sekunden durch.
+
+     Die Bilder gehen NICHT ueber FormSubmit: dessen AJAX-Weg nimmt nur
+     JSON, keine Dateien. Sie gehen an unseren eigenen Worker, der sie
+     ablegt, sofort per Telegram aufs Handy schickt und die Adressen
+     zurueckgibt — die stehen dann als Links in der E-Mail.
+     ================================================================== */
+  var MAX_FOTOS = 4, MAX_KANTE = 1600, fotos = [];
+  var fotoeingabe = document.getElementById('fotoeingabe');
+  var fotoliste   = document.getElementById('fotoliste');
+  var fotohinweis = document.getElementById('fotohinweis');
+  var fotofeld    = document.getElementById('fotofeld');
+
+  function fotoHinweis(text){ if(fotohinweis) fotohinweis.textContent = text || ''; }
+
+  function verkleinern(datei, fertig){
+    if(!/^image\//.test(datei.type)) return fertig(null);
+    var adresse = URL.createObjectURL(datei);
+    var bild = new Image();
+    bild.onload = function(){
+      var w = bild.naturalWidth, h = bild.naturalHeight;
+      var faktor = Math.min(1, MAX_KANTE / Math.max(w, h));
+      var flaeche = document.createElement('canvas');
+      flaeche.width  = Math.max(1, Math.round(w * faktor));
+      flaeche.height = Math.max(1, Math.round(h * faktor));
+      flaeche.getContext('2d').drawImage(bild, 0, 0, flaeche.width, flaeche.height);
+      URL.revokeObjectURL(adresse);
+      // Zweiter Anlauf mit weniger Qualitaet, falls ein sehr detailreiches
+      // Bild trotz Verkleinerung zu schwer bleibt.
+      var daten = flaeche.toDataURL('image/jpeg', 0.82);
+      if(daten.length > 1200000) daten = flaeche.toDataURL('image/jpeg', 0.6);
+      fertig(daten);
+    };
+    bild.onerror = function(){ URL.revokeObjectURL(adresse); fertig(null); };
+    bild.src = adresse;
+  }
+
+  function fotoZeichnen(){
+    if(!fotoliste) return;
+    fotoliste.innerHTML = '';
+    fotos.forEach(function(foto, i){
+      var kachel = document.createElement('div');
+      kachel.className = 'fotokachel';
+      var bild = document.createElement('img');
+      bild.src = foto.vorschau; bild.alt = 'Foto ' + (i+1);
+      var weg = document.createElement('button');
+      weg.type = 'button'; weg.textContent = '×'; weg.setAttribute('aria-label','Foto entfernen');
+      weg.onclick = function(){ fotos.splice(i,1); fotoZeichnen(); fotoHinweis(''); };
+      kachel.appendChild(bild); kachel.appendChild(weg);
+      fotoliste.appendChild(kachel);
+    });
+  }
+
+  function fotosAufnehmen(dateien){
+    var offen = MAX_FOTOS - fotos.length;
+    if(offen <= 0){ fotoHinweis('Mehr als ' + MAX_FOTOS + ' Fotos gehen nicht — das reicht uns aber auch.'); return; }
+    var liste = Array.prototype.slice.call(dateien, 0, offen);
+    if(dateien.length > offen) fotoHinweis('Es werden die ersten ' + offen + ' Bilder genommen.');
+    liste.forEach(function(datei){
+      verkleinern(datei, function(daten){
+        if(!daten){ fotoHinweis('Eine Datei war kein Bild und wurde übersprungen.'); return; }
+        fotos.push({ dateiname: (datei.name || 'foto.jpg').slice(0,120), typ: 'image/jpeg', vorschau: daten });
+        fotoZeichnen();
+      });
+    });
+  }
+
+  if(fotoeingabe){
+    fotoeingabe.addEventListener('change', function(){ fotosAufnehmen(this.files); this.value=''; });
+  }
+  if(fotofeld){
+    ['dragenter','dragover'].forEach(function(e){
+      fotofeld.addEventListener(e, function(ev){ ev.preventDefault(); fotofeld.classList.add('ueber'); });
+    });
+    ['dragleave','drop'].forEach(function(e){
+      fotofeld.addEventListener(e, function(ev){ ev.preventDefault(); fotofeld.classList.remove('ueber'); });
+    });
+    fotofeld.addEventListener('drop', function(ev){
+      if(ev.dataTransfer && ev.dataTransfer.files) fotosAufnehmen(ev.dataTransfer.files);
+    });
+  }
+
   var formerr=document.getElementById('formerr');
 
   function submit(){
@@ -1046,35 +1167,57 @@
 
     var gclid=holeGclid();
 
-    // Payload für die E-Mail aufbereiten (schön lesbar)
-    var payload={
-      'Bereich':      data.bereich    || '–',
-      'Fläche':       data.flaeche    || '–',
-      'Zeitrahmen':   data.zeitrahmen || '–',
-      'Name':         data.name       || '',
-      'Telefon':      data.telefon    || '',
-      'E-Mail':       data.email      || '',
-      'PLZ / Ort':    data.plz        || '',
-      'Projektinfo':  data.nachricht  || '–',
-      'Herkunft':     CONFIG.quelle,
-      'Klick-Kennung': gclid || '–',
-      '_subject':     'Neue Mikrozement-Anfrage – '+(data.bereich||'Mikrozement'),
-      '_template':    'table',
-      '_captcha':     'false'
-    };
-
     formerr.classList.remove('show');
-    next.classList.add('loading'); next.textContent='Wird gesendet';
+    next.classList.add('loading');
+    next.textContent = fotos.length ? 'Fotos werden übertragen' : 'Wird gesendet';
 
-    fetch(CONFIG.formEndpoint,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify(payload)
+    /* Reihenfolge mit Absicht: erst der eigene Worker, dann die E-Mail.
+       Der Worker legt die Fotos ab und gibt ihre Adressen zurueck — die
+       gehoeren in dieselbe E-Mail, sonst muesste man zwei Nachrichten
+       zusammensuchen. Er meldet die Anfrage ausserdem sofort per Telegram
+       aufs Handy. Scheitert er, geht die E-Mail trotzdem raus: der Kontakt
+       ist wichtiger als das Bild. */
+    meldeAnfrage(data, gclid)
+    .then(function(fotoAdressen){
+      next.textContent='Wird gesendet';
+
+      // Aufbau der E-Mail: zuerst, wen man anrufen muss, danach worum es
+      // geht. Die Herkunft und die Klick-Kennung stehen zuletzt — sie sind
+      // fuer die Auswertung da, nicht fuer den Rueckruf.
+      var payload={
+        'Name':         data.name       || '',
+        'Telefon':      data.telefon    || '',
+        'E-Mail':       data.email      || '–',
+        'PLZ / Ort':    data.plz        || '',
+        'Bereich':      data.bereich    || '–',
+        'Fläche':       data.flaeche    || '–',
+        'Zeitrahmen':   data.zeitrahmen || '–',
+        'Projektinfo':  data.nachricht  || '–'
+      };
+
+      fotoAdressen.forEach(function(adresse, i){ payload['Foto '+(i+1)] = adresse; });
+      if(fotos.length && fotoAdressen.length < fotos.length){
+        payload['Fotos'] = 'Der Kunde hat '+fotos.length+' Foto(s) angehängt, die Übertragung ist gescheitert. Bitte beim Rückruf danach fragen.';
+      }
+
+      payload['Herkunft']       = CONFIG.quelle;
+      payload['Klick-Kennung']  = gclid || '–';
+      payload['_subject']       = '🔔 Anfrage: '+(data.name||'ohne Namen')
+                                + (data.plz ? ' · '+data.plz : '')
+                                + ' · '+(data.bereich||'Mikrozement')
+                                + (fotoAdressen.length ? ' · 📷 '+fotoAdressen.length : '');
+      payload['_template']      = 'box';
+      payload['_captcha']       = 'false';
+
+      return fetch(CONFIG.formEndpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify(payload)
+      });
     })
     .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok,j:j}; }); })
     .then(function(res){
       if(!res.ok){ throw new Error('send failed'); }
-      meldeAnfrage(data, gclid);
       fireConversion();
       form.style.display='none';
       done.classList.add('show');
@@ -1091,26 +1234,39 @@
      Rückwirkung: Scheitert die Meldung, hat der Besucher trotzdem abgesendet
      und die E-Mail ist raus. Deshalb kein await und ein leeres catch. */
   function meldeAnfrage(data, gclid){
-    if(!CONFIG.anfrageEndpoint || !CONFIG.anfrageSchluessel) return;
-    try{
-      fetch(CONFIG.anfrageEndpoint,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        keepalive:true,
-        body:JSON.stringify({
-          schluessel: CONFIG.anfrageSchluessel,
-          name:       data.name      || '',
-          telefon:    data.telefon   || '',
-          email:      data.email     || '',
-          ort:        data.plz       || '',
-          projekt:    'Mikrozement: '+(data.bereich||'')+(data.flaeche?' ('+data.flaeche+')':''),
-          zeitrahmen: data.zeitrahmen|| '',
-          nachricht:  data.nachricht || '',
-          quelle:     CONFIG.quelle,
-          gclid:      gclid || ''
-        })
-      }).catch(function(){});
-    }catch(e){}
+    if(!CONFIG.anfrageEndpoint || !CONFIG.anfrageSchluessel) return Promise.resolve([]);
+
+    var koerper = {
+      schluessel: CONFIG.anfrageSchluessel,
+      name:       data.name      || '',
+      telefon:    data.telefon   || '',
+      email:      data.email     || '',
+      ort:        data.plz       || '',
+      projekt:    'Mikrozement: '+(data.bereich||'')+(data.flaeche?' ('+data.flaeche+')':''),
+      zeitrahmen: data.zeitrahmen|| '',
+      nachricht:  data.nachricht || '',
+      quelle:     CONFIG.quelle,
+      gclid:      gclid || '',
+      fotos:      fotos.map(function(f){
+                    return { dateiname:f.dateiname, typ:f.typ, daten:f.vorschau.replace(/^data:[^,]*,/,'') };
+                  })
+    };
+
+    // Nie blockieren: Ein haengender Worker darf die Anfrage nicht kosten.
+    // Nach 25 Sekunden geht es ohne Fotoadressen weiter — bei vier Bildern
+    // ueber Mobilfunk ist das reichlich bemessen.
+    var frist = new Promise(function(fertig){ setTimeout(function(){ fertig([]); }, 25000); });
+
+    var senden = fetch(CONFIG.anfrageEndpoint,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(koerper)
+    })
+    .then(function(r){ return r.ok ? r.json() : {}; })
+    .then(function(j){ return Array.isArray(j.fotos) ? j.fotos : []; })
+    .catch(function(){ return []; });
+
+    return Promise.race([senden, frist]);
   }
 
   render();

@@ -405,6 +405,99 @@
   .faq details p{padding:0 0 20px;color:var(--text);font-size:15.5px;line-height:1.65}
   .faq details p + p{padding-top:0;margin-top:-8px}
 
+  /* =========================================================
+     HANDY - eigener Block, bewusst als letzter im Stylesheet,
+     damit er die Regeln darueber ueberschreibt.
+
+     Gemessen am 09.09.2026 auf 390x844 (iPhone-Format):
+       Seite 14.843 px = 17,6 Bildschirme hoch,
+       Anfrageformular begann erst nach 14,9 Bildschirmen,
+       709 KB Hintergrundvideo geladen - keins davon lief,
+       Anruf im Kopfbereich war ein 18x18-Symbol,
+       der erste Bildschirm zeigte kein einziges Mikrozement-Motiv.
+     Genau diese fuenf Punkte behandelt dieser Block.
+     ========================================================= */
+  @media(max-width:760px){
+
+    /* 100vh springt, sobald die Adressleiste ein- oder ausfaehrt: der
+       Kopfbereich wackelt beim ersten Wischen. svh ist die kleine
+       Ansicht und bleibt stehen. */
+    .hero{min-height:100svh}
+    .panel{min-height:76svh}
+
+    /* Der erste Bildschirm zeigte am Handy praktisch nichts: der Clip lag
+       dunkler ueber dem Standbild, und der Verlauf darueber schluckte den
+       Rest. Der Kunde las von Mikrozement, ohne welchen zu sehen.
+       Jetzt: Clip aus (siehe Script unten), Verlauf gleichmaessiger, und
+       der Ausschnitt sitzt auf der Dusche statt auf der leeren Wand - bei
+       3:4 auf einem 390er Bildschirm schneidet cover sonst genau das
+       Erkennbare weg. */
+    .hero-bg{background-position:30% center}
+    .hero-bg::after{background:linear-gradient(0deg,rgba(11,11,15,.93) 18%,rgba(11,11,15,.72) 55%,rgba(11,11,15,.62) 100%)}
+
+    /* Die Zeile ueber der Ueberschrift brach zweizeilig um und riss ein
+       Loch zwischen "MIKROZEMENT" und der Aufzaehlung. */
+    .pill{font-size:11.5px;letter-spacing:.4px;gap:6px;padding:8px 14px;margin-bottom:20px}
+
+    /* Der dritte Vertrauenspunkt lag unter dem Balken am unteren Rand. */
+    .chips{gap:11px}
+    .chip{font-size:13.5px}
+    .lead{margin-bottom:26px}
+    .hero-cta{margin-bottom:22px}
+
+    /* Anrufen ist am Handy die zweite Handlung neben dem Formular.
+       Uebrig blieb bisher nur das Symbol - 18x18 px, kein Ziel fuer
+       einen Daumen. Jetzt ein richtiger runder Knopf. */
+    .phone{width:44px;height:44px;justify-content:center;border-radius:50%;
+           border:1.5px solid rgba(255,255,255,.30);background:rgba(255,255,255,.07)}
+    .phone svg{width:20px;height:20px}
+
+    /* Der Scrollhinweis lag ueber den Vertrauenspunkten und sagt
+       dasselbe wie der Balken am unteren Rand. */
+    .scrollcue{display:none}
+    /* 96 px unten: die Hoehe des festen Balkens plus Luft. Vorher lag der
+       dritte Vertrauenspunkt darunter. */
+    .hero .wrap{padding-top:74px;padding-bottom:96px}
+
+    /* Abstaende: 84 bis 96 px Luft je Abschnitt sind am Handy fast ein
+       halber Bildschirm - viermal Wischen fuer nichts. */
+    .wrap{padding:0 18px}
+    .mz-sec,.preise-sec,.quiz-sec{padding:54px 0}
+    .mz-band .wrap{padding:54px 18px}
+    .panel .wrap{padding:72px 18px}
+    .sec-head{margin-bottom:26px}
+
+    /* Karten und Formular kompakter. Der Text bleibt vollstaendig,
+       nur die Polster schrumpfen. */
+    .mz-grid,.mz-vergleich,.mz-ablauf{gap:14px}
+    .mz-karte{padding:22px 20px}
+    .mz-karte h3{font-size:20px;margin-bottom:8px}
+    .mz-schritt{padding:22px 18px 18px}
+    .mz-schritt::before{font-size:36px;margin-bottom:6px}
+    .mz-flaeche .txt{padding:16px 16px 18px}
+    .quiz-card{padding:24px 18px;border-radius:18px}
+    .preis-karte{padding:20px 18px}
+    .zuschuss{padding:20px 18px}
+
+    /* Die beiden Vergleichsbilder standen im Hochformat und kosteten
+       zusammen fast einen ganzen Bildschirm. Fuer "vorher/nachher"
+       reicht das Querformat. */
+    .mz-spalte img{aspect-ratio:4/3}
+    .mz-spalte{padding:20px 18px}
+
+    /* Die Fusszeilen-Links waren 17 px hoch - zu schmal zum Treffen. */
+    footer a{display:inline-block;padding:8px 0}
+    .foot-bottom{gap:4px}
+    .foot-bottom a{margin-left:0;margin-right:20px}
+  }
+
+  /* Sehr schmale Geraete (iPhone SE und aehnlich): das Wort in der
+     Ueberschrift darf nicht ueber den Rand laufen. */
+  @media(max-width:380px){
+    h1{font-size:38px}
+    .pill{font-size:12px;padding:8px 13px}
+  }
+
 </style>
 </head>
 <body>
@@ -967,6 +1060,15 @@
   // Quelle erst gesetzt, wenn der Besucher hinscrollt; das kostet oben auf der
   // Seite nichts und liefert unten tatsaechlich Bewegung.
   function laufendeAufnahmen(){
+  // Am Handy kosten die drei Hintergrundclips zusammen rund 700 KB
+  // Mobilfunk fuer reine Deko - und laufen dort haeufig gar nicht,
+  // weil Datensparmodus oder Autoplay-Sperre greift (gemessen am
+  // 09.09.2026: 709 KB geladen, kein einziger Clip lief). Hinter
+  // jedem Clip liegt ohnehin ein Standbild, das die Flaeche allein
+  // traegt. Also: unter 900 px und im Datensparmodus gar nicht erst laden.
+  var schmal = window.matchMedia && window.matchMedia('(max-width:900px)').matches;
+  var sparsam = !!(navigator.connection && navigator.connection.saveData);
+  if(schmal || sparsam){ return; }
   document.querySelectorAll('.bgv').forEach(function(v){
     var quelle=v.getAttribute('data-video');
     if(!quelle){ return; }

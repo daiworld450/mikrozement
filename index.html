@@ -378,6 +378,7 @@
   .bildhinweis{margin-top:26px;font-size:13px;color:var(--muted);text-align:center}
   .mz-sec:not(.hell) .bildhinweis{color:rgba(255,255,255,.45)}
   .mz-band .bildhinweis{text-align:left;margin-top:20px;color:rgba(255,255,255,.5)}
+  .panel .bildhinweis{text-align:left;margin-top:18px;color:rgba(255,255,255,.5)}
 
   /* ===== Mikrozement-spezifische Bausteine ===== */
   .mz-sec{padding:84px 0;background:#0b0b0f}
@@ -688,23 +689,23 @@
   <section class="panel">
     <div class="media">
       <div class="kenburns" style="background:linear-gradient(135deg,#2a1a1a,#0b0b0f)"></div>
-      <!-- Motiv: ein Bad vor der Modernisierung, im selben Hochformat und
-           derselben Bildsprache wie das Kopfbild (Fenster links, weiches
-           Tageslicht, Blick in den schmalen Raum).
+      <!-- Das einzige echte Foto auf dieser Seite: eine eigene Baustelle von
+           Berisa Bau, Bad im Rohzustand. Abgeschlagene Fliesen, Kleberreste
+           an der Wand, freigelegte Leitungen, Estrich voller Staub - genau
+           das, wovon der Text daneben spricht.
+
+           Alles andere hier sind Visualisierungen. Deshalb steht unter
+           diesem Bild ein Hinweis, der das sagt: der Unterschied ist der
+           ganze Wert des Bildes.
 
            Vorher lag hier ein Clip im Querformat (1280 x 720) von einem
-           verwahrlosten Bad. Am Handy wurde er auf Hochformat beschnitten
-           und war als Bild nicht mehr lesbar; ausserdem zeigte er
-           Verwahrlosung statt Alter - gemeint ist aber der Kunde mit einem
-           gepflegten, nur eben veralteten Bad.
-
-           Der Clip ist damit raus: kein data-video mehr, also steht das
-           Standbild auf jedem Geraet. Soll die Bewegung zurueck, genuegt
-           hier wieder data-video="videos/panel-vorher.mp4" - die Datei
-           liegt weiterhin im Ordner. -->
+           verwahrlosten fremden Bad. Er war am Handy auf Hochformat
+           beschnitten nicht mehr lesbar, und er war nicht von uns. Der Clip
+           ist raus: kein data-video mehr, also steht das Bild auf jedem
+           Geraet. -->
       <video class="bgv" autoplay muted loop playsinline preload="none"
-             poster="bilder/altbad.jpg"
-             aria-label="Bad vor der Modernisierung"></video>
+             poster="bilder/abbruch-echt.jpg"
+             aria-label="Bad im Rohzustand auf einer Baustelle von Berisa Bau"></video>
       <div class="scrim"></div>
     </div>
     <span class="num">01</span>
@@ -716,6 +717,7 @@
         <span class="tag"><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Kein Container vor der Tür</span>
         <span class="tag"><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Sie bleiben wohnen</span>
       </div>
+      <p class="bildhinweis">Foto einer eigenen Baustelle.</p>
     </div></div>
   </section>
 </div>

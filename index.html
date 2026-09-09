@@ -89,6 +89,12 @@
   .pill{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border:1px solid var(--line);border-radius:500px;
         background:rgba(255,255,255,.05);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:26px;color:#fff}
   .pill b{color:#fff;font-weight:700}
+  /* Am Laptop traegt der Kopfbereich den Ortsbezug (.badge-top); dort ist
+     diese Zeile ueberfluessig. Sie schaltet sich erst im Handy-Block ein. */
+  .ortzeile{display:none;align-items:center;gap:9px;font-size:13.5px;font-weight:500;
+            color:rgba(255,255,255,.78);margin:-12px 0 20px}
+  .ortzeile .dot{width:8px;height:8px;border-radius:50%;background:#38d17a;
+                 box-shadow:0 0 0 4px rgba(56,209,122,.2);flex:none}
   h1{font-size:clamp(42px,7vw,84px);margin-bottom:22px;color:#fff}
   h1 .under{position:relative;white-space:nowrap}
   h1 .under::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:12px;background:var(--red);z-index:-1;transform:skewX(-8deg)}
@@ -479,16 +485,64 @@
     .preis-karte{padding:20px 18px}
     .zuschuss{padding:20px 18px}
 
-    /* Die beiden Vergleichsbilder standen im Hochformat und kosteten
-       zusammen fast einen ganzen Bildschirm. Fuer "vorher/nachher"
-       reicht das Querformat. */
-    .mz-spalte img{aspect-ratio:4/3}
+    /* Diese beiden Bilder sind die Stelle, an der man den Unterschied
+       sehen soll - sie duerfen nicht die kleinsten der Seite sein.
+       Hochformat, volle Breite: 354 x 472 statt 316 x 237. */
+    .mz-spalte img{aspect-ratio:3/4}
     .mz-spalte{padding:20px 18px}
+
+    /* ---- Bilder: am Handy war jedes Motiv kleiner als am Laptop ----
+       Gemessen im Vergleich 1280 zu 390 px:
+         Kopfbild        449 x 598  ->  gar nicht sichtbar
+         Anwendungsbild  224 x 299  ->  127 x 169
+       Am Handy stehen 390 px Breite zur Verfuegung. Ein Bild darf sie
+       haben - dann ist es dort groesser als am Laptop, nicht kleiner. */
+
+    /* Das Kopfbild stand am Laptop als eigene helle Spalte neben dem Text,
+       am Handy war es ausgeblendet: der Kunde sah nur die abgedunkelte
+       Tapete dahinter. Jetzt steht es auch hier als richtiges Bild. */
+    .hero-bild{display:block;margin-top:24px}
+    .hero-bild img{max-height:none;border-radius:14px}
+    /* Das Bild traegt jetzt die Flaeche - der Hintergrund darf sich
+       zuruecknehmen, damit die Schrift ruhig darauf steht. */
+    .hero-bg::after{background:linear-gradient(0deg,rgba(11,11,15,.95) 20%,rgba(11,11,15,.86) 100%)}
+    .hero{min-height:0}
+    .hero .wrap{padding-bottom:44px}
+
+    /* Die vier Anwendungsbilder waren zu zweit in eine Reihe gequetscht.
+       Statt sie zu stapeln (das haette den Abschnitt auf ueber zwei
+       Bildschirme aufgeblaeht): eine Wischgalerie. Ein Bild ist jetzt
+       290 statt 127 px breit, und der Abschnitt ist trotzdem kuerzer als
+       vorher, weil eine Reihe statt zwei untereinander steht. Die
+       angeschnittene naechste Kachel zeigt, dass es weitergeht. */
+    .mz-flaechen{display:flex;grid-template-columns:none;gap:12px;margin-top:0;
+                 overflow-x:auto;scroll-snap-type:x mandatory;
+                 -webkit-overflow-scrolling:touch;scrollbar-width:none;
+                 padding:2px 18px 10px;margin-left:-18px;margin-right:-18px}
+    .mz-flaechen::-webkit-scrollbar{display:none}
+    .mz-flaeche{flex:0 0 82%;scroll-snap-align:center}
+
+    /* Der Textschleier im Panel lief von links nach rechts - richtig,
+       solange der Text nur die halbe Breite einnimmt. Am Handy nimmt er
+       die ganze, und seine rechte Haelfte stand auf hellem Grund. */
+    .panel .scrim{background:linear-gradient(0deg,rgba(6,6,10,.92) 0%,rgba(6,6,10,.74) 46%,rgba(6,6,10,.46) 100%)}
+
+    /* Der Ortsbezug aus dem Kopfbereich, der am Handy keinen Platz hat. */
+    .ortzeile{display:flex}
 
     /* Die Fusszeilen-Links waren 17 px hoch - zu schmal zum Treffen. */
     footer a{display:inline-block;padding:8px 0}
     .foot-bottom{gap:4px}
     .foot-bottom a{margin-left:0;margin-right:20px}
+  }
+
+  /* Tablet-Bereich (761 bis 999 px): hier greift weder der Handy-Block
+     noch die Laptop-Spalte - ohne diese Regel bliebe das Kopfbild als
+     einziges Geraeteformat ausgeblendet. Es steht hier in voller Breite
+     unter dem Text. */
+  @media(min-width:761px) and (max-width:999px){
+    .hero-bild{display:block;margin-top:28px}
+    .hero-bild img{max-height:560px}
   }
 
   /* Sehr schmale Geraete (iPhone SE und aehnlich): das Wort in der
@@ -527,6 +581,11 @@
   <div class="wrap">
    <div class="hero-text">
     <span class="pill"><b>MIKROZEMENT</b> · BAD · BODEN · DUSCHE · TREPPE</span>
+    <!-- Der Ortsbezug steht am Laptop oben im Kopf (.badge-top). Dort ist am
+         Handy kein Platz, und damit fehlte er dem Handybesucher ganz - obwohl
+         gerade er wissen will, ob wir bei ihm arbeiten. Diese Zeile ist die
+         Handy-Ausgabe derselben Aussage; am Laptop bleibt sie aus. -->
+    <p class="ortzeile"><span class="dot"></span>Fugenlose Oberflächen · Mülheim a.&nbsp;d. Ruhr &amp; Umgebung</p>
     <h1>Fugenlos.<br>Ohne Stemmen.<br><span class="under">In wenigen Tagen.</span></h1>
     <p class="lead">Mikrozement kommt 2&ndash;3&nbsp;mm dünn direkt auf Ihre alten Fliesen. Kein Abschlagen, kein Bauschutt, keine Fugen, die schimmeln. In 60 Sekunden erfassen wir Ihr Vorhaben &ndash; Antwort innerhalb von 24 Stunden.</p>
     <div class="hero-cta">

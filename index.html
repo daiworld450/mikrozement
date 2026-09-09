@@ -562,10 +562,38 @@
     .mz-flaechen::-webkit-scrollbar{display:none}
     .mz-flaeche{flex:0 0 82%;scroll-snap-align:center}
 
-    /* Der Textschleier im Panel lief von links nach rechts - richtig,
-       solange der Text nur die halbe Breite einnimmt. Am Handy nimmt er
-       die ganze, und seine rechte Haelfte stand auf hellem Grund. */
-    .panel .scrim{background:linear-gradient(0deg,rgba(6,6,10,.92) 0%,rgba(6,6,10,.74) 46%,rgba(6,6,10,.46) 100%)}
+    /* ---- "Das hier entfaellt." ----
+       Der Abschnitt legte den Text direkt auf das Foto des alten Bades.
+       Am Laptop geht das auf: der Text nimmt die halbe Breite, die andere
+       Haelfte zeigt das Bild. Am Handy nimmt der Text die ganze Breite -
+       und das Foto ist ein Querformat (1280 x 720), das auf 390 x 641
+       hochkant beschnitten wird. Uebrig blieb ein Ausschnitt aus Fenster
+       und Heizkoerper: als Bild nicht mehr lesbar, als Hintergrund nur
+       schmutzig, und der Text stand mal auf Dunkel, mal auf dem grellen
+       Fenster.
+
+       Also getrennt, wie im Rest der Seite auch: erst das Bild als Bild,
+       darunter der Text auf ruhigem Grund. */
+    .panel{display:block;min-height:0;align-items:stretch}
+    .panel .media{position:relative;inset:auto;aspect-ratio:3/2}
+    /* Der Farbverlauf war nur Fuellung fuer den Fall ohne Video. */
+    .panel .kenburns{display:none}
+    .panel .bgv{position:absolute;inset:0;height:100%}
+    /* Kein Schleier mehr ueber dem ganzen Bild - nur noch ein weicher
+       Uebergang in den Textbereich darunter. */
+    .panel .scrim{background:linear-gradient(0deg,rgba(11,11,15,.92) 0%,rgba(11,11,15,0) 32%)}
+    /* Die grosse "01" hing halb hinter der Ueberschrift. Es gibt ohnehin
+       nur dieses eine Kapitel - eine Ziffer ohne Fortsetzung. */
+    .panel .num{display:none}
+    .panel .wrap{padding:24px 18px 54px}
+    .panel .inner{max-width:none}
+    .panel h2{margin:10px 0 16px}
+    /* Die beiden Merkmale sahen als gerandete Pillen wie Knoepfe aus,
+       ohne welche zu sein. Als Haekchenzeilen sind sie dasselbe wie die
+       Punkte im Kopfbereich - und lesen sich auch so. */
+    .panel .tags{flex-direction:column;align-items:flex-start;gap:11px;margin-top:16px}
+    .panel .tag{background:none;border:0;padding:0;font-size:14.5px;color:rgba(255,255,255,.85)}
+    .panel .tag svg{fill:#38d17a}
 
     /* Der Ortsbezug aus dem Kopfbereich, der am Handy keinen Platz hat. */
     .ortzeile{display:flex}
@@ -1060,7 +1088,7 @@
         <p><a href="tel:+4915565535408">+49 1556 5535 408</a></p>
         <p><a href="mailto:info@berisabau.de">info@berisabau.de</a></p>
         <p><a href="https://www.berisabau.de" target="_blank" rel="noopener">www.berisabau.de</a></p>
-        <p class="zeiten">Mo&ndash;Fr 8&ndash;18 Uhr<br>Sa nach Absprache</p>
+        <p class="zeiten">Mo&ndash;Fr 8&ndash;16 Uhr</p>
       </div>
     </div>
     <div class="foot-bottom">

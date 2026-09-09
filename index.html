@@ -120,13 +120,12 @@
                    animation:kb 24s ease-in-out infinite alternate;will-change:transform}
   .panel:nth-child(2) .kenburns{animation-direction:alternate-reverse}
   @keyframes kb{0%{transform:scale(1.02) translate(0,0)}100%{transform:scale(1.16) translate(-2%,-2%)}}
-  /* Das Motiv ist ein Hochformat (1050 x 1400). Am Laptop steht es in einer
-     breiten Flaeche, cover schneidet dort ueber die Haelfte der Hoehe weg -
-     bei zentriertem Ausschnitt genau Fenster und Wanne. 30 % holt beide
-     zurueck. Am Handy hat die Flaeche dasselbe 3:4, dort wirkt die Zeile
-     nicht. */
-  .panel .bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-              object-position:center 30%;background:transparent;z-index:1}
+  .panel .bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:transparent;z-index:1}
+  /* Das Panel-Foto liegt in zwei Zuschnitten vor (siehe <picture> im
+     Markup). Jeder passt zu seiner Flaeche, deshalb schneidet cover hier
+     kaum noch etwas weg - object-position darf mittig bleiben. */
+  .panel .panel-bild{position:absolute;inset:0;z-index:1;display:block}
+  .panel .panel-bild img{width:100%;height:100%;object-fit:cover;display:block}
   .panel .scrim{position:absolute;inset:0;z-index:2;
      background:linear-gradient(90deg,rgba(6,6,10,.92) 0%,rgba(6,6,10,.72) 42%,rgba(6,6,10,.30) 100%),
                 linear-gradient(0deg,rgba(6,6,10,.85) 0%,transparent 45%)}
@@ -586,7 +585,7 @@
     .panel .media{position:relative;inset:auto;aspect-ratio:3/4}
     /* Der Farbverlauf war nur Fuellung fuer den Fall ohne Video. */
     .panel .kenburns{display:none}
-    .panel .bgv{position:absolute;inset:0;height:100%}
+    .panel .panel-bild,.panel .panel-bild img{position:absolute;inset:0;height:100%}
     /* Kein Schleier mehr ueber dem ganzen Bild - nur noch ein weicher
        Uebergang in den Textbereich darunter. */
     .panel .scrim{background:linear-gradient(0deg,rgba(11,11,15,.92) 0%,rgba(11,11,15,0) 32%)}
@@ -690,22 +689,28 @@
     <div class="media">
       <div class="kenburns" style="background:linear-gradient(135deg,#2a1a1a,#0b0b0f)"></div>
       <!-- Das einzige echte Foto auf dieser Seite: eine eigene Baustelle von
-           Berisa Bau, Bad im Rohzustand. Abgeschlagene Fliesen, Kleberreste
-           an der Wand, freigelegte Leitungen, Estrich voller Staub - genau
-           das, wovon der Text daneben spricht.
+           Berisa Bau. Alte weisse Wandfliesen, Rippenheizkoerper, brauner
+           Fliesenboden - ein Raum, wie ihn der Kunde zu Hause hat. Und
+           genau der Boden, von dem der Text daneben sagt, dass er liegen
+           bleibt und ueberzogen wird.
 
            Alles andere hier sind Visualisierungen. Deshalb steht unter
            diesem Bild ein Hinweis, der das sagt: der Unterschied ist der
            ganze Wert des Bildes.
 
-           Vorher lag hier ein Clip im Querformat (1280 x 720) von einem
-           verwahrlosten fremden Bad. Er war am Handy auf Hochformat
-           beschnitten nicht mehr lesbar, und er war nicht von uns. Der Clip
-           ist raus: kein data-video mehr, also steht das Bild auf jedem
-           Geraet. -->
-      <video class="bgv" autoplay muted loop playsinline preload="none"
-             poster="bilder/abbruch-echt.jpg"
-             aria-label="Bad im Rohzustand auf einer Baustelle von Berisa Bau"></video>
+           ZWEI ZUSCHNITTE, nicht ein Bild mit zwei Beschnitten:
+             Handy  -> Hochformat 3:4, das ganze Motiv, nichts abgeschnitten
+             Laptop -> Querformat 3:2, derselbe Raum quer aufgezogen
+           <picture> laesst den Browser waehlen; jedes Geraet laedt nur
+           seine Datei. Ein einziges Bild haette auf einem der beiden
+           Geraete immer die Haelfte des Raums verloren - genau der Fehler,
+           den die Seite vorher hatte. -->
+      <picture class="panel-bild">
+        <source media="(min-width:761px)" srcset="bilder/fliesen-vorher-quer.jpg">
+        <img src="bilder/fliesen-vorher-hoch.jpg"
+             alt="Raum mit alten Fliesen auf einer Baustelle von Berisa Bau"
+             width="1050" height="1400">
+      </picture>
       <div class="scrim"></div>
     </div>
     <span class="num">01</span>

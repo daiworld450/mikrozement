@@ -566,16 +566,17 @@
        Der Abschnitt legte den Text direkt auf das Foto des alten Bades.
        Am Laptop geht das auf: der Text nimmt die halbe Breite, die andere
        Haelfte zeigt das Bild. Am Handy nimmt der Text die ganze Breite -
-       und das Foto ist ein Querformat (1280 x 720), das auf 390 x 641
-       hochkant beschnitten wird. Uebrig blieb ein Ausschnitt aus Fenster
-       und Heizkoerper: als Bild nicht mehr lesbar, als Hintergrund nur
+       und das Motiv war ein Querformat, das auf 390 x 641 hochkant
+       beschnitten wurde: als Bild nicht mehr lesbar, als Hintergrund nur
        schmutzig, und der Text stand mal auf Dunkel, mal auf dem grellen
-       Fenster.
+       Fenster. Das Motiv ist inzwischen ausgetauscht (bilder/altbad.jpg,
+       Hochformat) - die Trennung von Bild und Text bleibt trotzdem
+       richtig, weil der Text am Handy die ganze Breite braucht.
 
        Also getrennt, wie im Rest der Seite auch: erst das Bild als Bild,
        darunter der Text auf ruhigem Grund. */
     .panel{display:block;min-height:0;align-items:stretch}
-    .panel .media{position:relative;inset:auto;aspect-ratio:3/2}
+    .panel .media{position:relative;inset:auto;aspect-ratio:3/4}
     /* Der Farbverlauf war nur Fuellung fuer den Fall ohne Video. */
     .panel .kenburns{display:none}
     .panel .bgv{position:absolute;inset:0;height:100%}
@@ -681,13 +682,23 @@
   <section class="panel">
     <div class="media">
       <div class="kenburns" style="background:linear-gradient(135deg,#2a1a1a,#0b0b0f)"></div>
-      <!-- poster: damit hier auch dann ein Bild steht, wenn der Browser das
-           Video nicht abspielt - Datensparmodus, verweigertes Autoplay, oder
-           ein Tab, der noch nie im Vordergrund war. Vorher blieb die Flaeche
-           in diesen Faellen schwarz. -->
+      <!-- Motiv: ein Bad vor der Modernisierung, im selben Hochformat und
+           derselben Bildsprache wie das Kopfbild (Fenster links, weiches
+           Tageslicht, Blick in den schmalen Raum).
+
+           Vorher lag hier ein Clip im Querformat (1280 x 720) von einem
+           verwahrlosten Bad. Am Handy wurde er auf Hochformat beschnitten
+           und war als Bild nicht mehr lesbar; ausserdem zeigte er
+           Verwahrlosung statt Alter - gemeint ist aber der Kunde mit einem
+           gepflegten, nur eben veralteten Bad.
+
+           Der Clip ist damit raus: kein data-video mehr, also steht das
+           Standbild auf jedem Geraet. Soll die Bewegung zurueck, genuegt
+           hier wieder data-video="videos/panel-vorher.mp4" - die Datei
+           liegt weiterhin im Ordner. -->
       <video class="bgv" autoplay muted loop playsinline preload="none"
-             poster="videos/panel-vorher-standbild.jpg"
-             data-video="videos/panel-vorher.mp4"></video>
+             poster="bilder/altbad.jpg"
+             aria-label="Bad vor der Modernisierung"></video>
       <div class="scrim"></div>
     </div>
     <span class="num">01</span>

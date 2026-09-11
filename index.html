@@ -57,6 +57,9 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
+  /* Anzeigen springen mit #anker direkt in den passenden Abschnitt; die
+     Ueberschrift soll dabei nicht unter dem festen Kopf verschwinden. */
+  section[id]{scroll-margin-top:84px}
   body{font-family:var(--body);color:var(--text);background:#0b0b0f;line-height:1.55;-webkit-font-smoothing:antialiased}
   h1,h2,h3,h4,.head{font-family:var(--head);font-weight:700;line-height:1.05;letter-spacing:.5px}
   img{max-width:100%;display:block}
@@ -1750,6 +1753,14 @@
 
   render();
 })();
+</script>
+<script>
+  (function(){
+    if(!location.hash) return;
+    var z=document.getElementById(location.hash.slice(1)); if(!z) return;
+    var r=document.documentElement; var s=r.style.scrollBehavior; r.style.scrollBehavior='auto';
+    z.scrollIntoView({block:'start'}); r.style.scrollBehavior=s;
+  })();
 </script>
 </body>
 </html>

@@ -1386,6 +1386,38 @@
       if(g){ localStorage.setItem(GK, JSON.stringify({v:g,t:Date.now()})); }
     }catch(e){}
   }
+  /* ---- Anzeigen-Herkunft (Anzeigengruppe, Keyword, Geraet) festhalten ----
+     Seit 12.09.2026 haengt die Kampagne an jede Ziel-URL
+     ag={adgroupid}&kw={keyword}&mt={matchtype}&dev={device} an. Google setzt
+     das je nach Anker vor oder hinter das #-Fragment - beide Stellen lesen.
+     Ergebnis landet als Klartext in der Anfrage-Mail und in der Datenbank,
+     damit beim Rueckruf klar ist, was der Kunde gesucht hat. */
+  var AK='berisa_anzeige';
+  var GRUPPEN={'198815759726':'Fugenloses Bad','198815759886':'Mikrozement Bad',
+               '198815759926':'Bad ohne Fliesen','198815759966':'Dusche fugenlos',
+               '198815760126':'Boden & Betonoptik',
+               '201361638202':'Fugenloses Bad (alt)','201361638362':'Mikrozement (alt)'};
+  function merkeAnzeige(){
+    try{
+      var teile=[location.search.replace(/^\?/,''), (location.hash.split('?')[1]||'')];
+      var p=new URLSearchParams(teile.filter(Boolean).join('&'));
+      var ag=p.get('ag'), kw=p.get('kw'), dev=p.get('dev'), mt=p.get('mt');
+      if(!ag && !kw) return;
+      var geraet={m:'Handy',t:'Tablet',c:'Laptop'}[dev]||'';
+      var text=[GRUPPEN[ag]||(ag?'Gruppe '+ag:''), kw||'', geraet].filter(Boolean).join(' · ');
+      localStorage.setItem(AK, JSON.stringify({v:text,t:Date.now()}));
+    }catch(e){}
+  }
+  function holeAnzeige(){
+    try{
+      var raw=localStorage.getItem(AK); if(!raw) return '';
+      var o=JSON.parse(raw); if(!o||!o.v) return '';
+      if(Date.now()-o.t > 30*24*3600*1000) return '';
+      return o.v;
+    }catch(e){ return ''; }
+  }
+  merkeAnzeige();
+
   function holeGclid(){
     try{
       var raw=localStorage.getItem(GK); if(!raw) return '';
@@ -1684,6 +1716,7 @@
 
       payload['Herkunft']       = CONFIG.quelle;
       payload['Klick-Kennung']  = gclid || '–';
+      payload['Anzeige']        = holeAnzeige() || '–';
       payload['_subject']       = '🔔 Anfrage: '+(data.name||'ohne Namen')
                                 + (data.plz ? ' · '+data.plz : '')
                                 + ' · '+(data.bereich||'Mikrozement')
@@ -1727,7 +1760,7 @@
       projekt:    'Mikrozement: '+(data.bereich||'')+(data.flaeche?' ('+data.flaeche+')':''),
       zeitrahmen: data.zeitrahmen|| '',
       nachricht:  data.nachricht || '',
-      quelle:     CONFIG.quelle,
+      quelle:     CONFIG.quelle + (holeAnzeige() ? ' · ' + holeAnzeige() : ''),
       gclid:      gclid || '',
       fotos:      fotos.map(function(f){
                     return { dateiname:f.dateiname, typ:f.typ, daten:f.vorschau.replace(/^data:[^,]*,/,'') };
@@ -1757,7 +1790,7 @@
 <script>
   (function(){
     if(!location.hash) return;
-    var z=document.getElementById(location.hash.slice(1)); if(!z) return;
+    var z=document.getElementById(location.hash.slice(1).split('?')[0]); if(!z) return;
     var r=document.documentElement; var s=r.style.scrollBehavior; r.style.scrollBehavior='auto';
     z.scrollIntoView({block:'start'}); r.style.scrollBehavior=s;
   })();

@@ -788,166 +788,67 @@
   </div>
 </section>
 
-<!-- Fuenf Themenabschnitte, 11.09.2026: je Ads-Anzeigengruppe ein Sprungziel,
-     Keywords stehen woertlich im Text (Zielseiten-Qualitaet, siehe
-     google-ads/berichte/QS-BERICHT-UND-PLAN-MIKROZEMENT-2026-09-11.md) -->
-<!--
-  Fünf neue Themenabschnitte für mikrozement.berisabau.de — Stand 11.09.2026.
-  Einsetzen: direkt nach dem bestehenden Abschnitt "WARUM MIKROZEMENT"
-  (schließt mit </section> nach den vier mz-karte-Blöcken) und vor dem
-  Abschnitt "WO" ("Wo wir Mikrozement einsetzen"). Beide Abschnitte davor
-  und danach bleiben unverändert.
-
-  Zweck: Jede der 5 Google-Ads-Anzeigengruppen bekommt einen eigenen
-  Sprunganker (id) und einen Text, der die zugehörigen Kampagnen-Keywords
-  wörtlich enthält. Formular-Anker geprüft: die Seite nennt das Formular
-  "#angebot" (nicht "#anfrage") — alle Buttons unten zeigen dorthin.
-
-  Verwendet ausschließlich vorhandene Klassen der Seite (mz-sec, hell,
-  sec-head, eyebrow, btn/btn-primary, checkmark-SVG aus mz-spalte.gut).
-  Neu ist nur der kleine Style-Block direkt darunter, für die
-  Fließtext-/Stichpunkt-Darstellung innerhalb der neuen Abschnitte.
-
-  Bewertungszahl "5,0 von 5 Sternen, 19 Google-Bewertungen" wie im Auftrag
-  vom 11.09.2026 angewiesen — Hinweis: die Seite selbst zeigt an anderer
-  Stelle (Abschnitt Preise) weiterhin "4,9 von 5, 17 Bewertungen". Vor
-  Veröffentlichung prüfen, welche Zahl aktuell stimmt, und ggf. beide
-  Stellen angleichen.
--->
+<!-- Fuenf Themen als Kacheln, 12.09.2026: je Ads-Anzeigengruppe ein Sprungziel
+     (id), Keywords stehen woertlich in Ueberschrift und Satz. Die Langfassung
+     vom 11.09. war sieben Handy-Bildschirme; das hier ist einer. -->
 <style>
-  .mz-thema-text{max-width:760px;margin:0 auto 26px;font-size:16.5px;line-height:1.7;color:rgba(255,255,255,.82)}
-  .mz-sec.hell .mz-thema-text{color:var(--text)}
-  .mz-thema-punkte{list-style:none;display:grid;gap:12px;max-width:620px;margin:0 auto 32px}
-  .mz-thema-punkte li{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.5;color:rgba(255,255,255,.85)}
-  .mz-sec.hell .mz-thema-punkte li{color:var(--text)}
-  .mz-thema-punkte li svg{width:19px;height:19px;flex:none;margin-top:2px;fill:#38d17a}
-  .mz-thema-cta{text-align:center}
+  .mz-kacheln{display:grid;gap:14px;max-width:1160px;margin:0 auto}
+  @media(min-width:760px){.mz-kacheln{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1100px){.mz-kacheln{grid-template-columns:repeat(3,1fr)}}
+  .mz-kachel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 22px 20px;scroll-margin-top:84px}
+  .mz-kachel h3{font-family:var(--head);font-size:21px;color:#fff;margin:0 0 8px;line-height:1.15}
+  .mz-kachel p{font-size:15px;line-height:1.55;color:rgba(255,255,255,.8);margin:0 0 12px}
+  .mz-kachel .preis{font-family:var(--head);font-weight:700;font-size:17px;color:#fff;margin:0 0 14px}
+  .mz-kachel .preis small{font-weight:400;font-size:13px;color:rgba(255,255,255,.6);margin-left:6px}
+  .mz-kachel a{font-family:var(--head);font-weight:700;font-size:15px;letter-spacing:.4px;color:#fff;text-decoration:none;border-bottom:2px solid var(--red);padding-bottom:2px}
+  @media(min-width:1100px){.mz-kachel:nth-child(4),.mz-kachel:nth-child(5){grid-column:span 1}}
 </style>
-
-<!-- ANZEIGENGRUPPE 1: FUGENLOSES BAD -->
-<section class="mz-sec" id="fugenloses-bad">
+<section class="mz-sec" id="leistungen-fugenlos">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Fugenloses Bad</span>
-      <h2>Fugenloses Bad &mdash; ganz ohne Fliesen</h2>
+      <span class="eyebrow">Was wir fugenlos machen</span>
+      <h2>F&uuml;nf Wege zum fugenlosen Bad</h2>
     </div>
-    <div class="mz-thema-text">
-      <p>Ein fugenloses Bad ist bei uns keine Behauptung, sondern eine Bauweise: keine Silikonfuge, die man nachziehen muss, kein Fugenkreuz, das nach zwei Jahren dunkel wird. Wir &uuml;berziehen Ihre vorhandenen Fliesen mit Mikrozement &ndash; Wand und fugenloser Boden aus einer durchgehenden Fl&auml;che, ohne Abschlagen und ohne Bauschutt. Manche suchen ein fugenloses Badezimmer, andere &bdquo;Badezimmer fugenlos&ldquo; oder schlicht ein Bad ohne Fugen &ndash; gemeint ist immer dasselbe: keine Fuge, die schimmelt, keine Fuge, die man alle paar Jahre erneuern muss. Ein Bad in dieser Bauweise ist meist in 4&ndash;6 Arbeitstagen fertig. Bei einer Fl&auml;che bis ca. 8&nbsp;m&sup2; liegt der Festpreis zwischen 6.000&nbsp;&euro; und 11.000&nbsp;&euro;, nach Aufma&szlig; vor Ort &ndash; in M&uuml;lheim an der Ruhr ebenso wie in Essen, Duisburg und Oberhausen.</p>
+    <div class="mz-kacheln">
+
+      <div class="mz-kachel" id="fugenloses-bad">
+        <h3>Fugenloses Bad &mdash; ganz ohne Fliesen</h3>
+        <p>Ihr Badezimmer fugenlos, direkt auf den vorhandenen Fliesen: ein Bad ohne Fugen hat keinen Schimmel und kein Nachfugen. Fugenloses Badezimmer mit fugenlosem Boden, meist in 4&ndash;6 Arbeitstagen.</p>
+        <p class="preis">6.000&ndash;11.000&nbsp;&euro;<small>bis ca. 8&nbsp;m&sup2;, fester Preis nach Aufma&szlig;</small></p>
+        <a href="#angebot">Angebot anfordern</a>
+      </div>
+
+      <div class="mz-kachel" id="mikrozement-im-bad">
+        <h3>Mikrozement im Bad &mdash; verlegen lassen</h3>
+        <p>Mikrozement Bad vom Fachbetrieb: Haftbr&uuml;cke, 2&ndash;3 Lagen, Versiegelung &ndash; auch Mikrozement auf Fliesen. Mikrozement verlegen lassen statt selbst probieren: Badsanierung mit Mikrozement (auch &bdquo;Microzement&ldquo; geschrieben) in M&uuml;lheim, Essen, Duisburg, Oberhausen.</p>
+        <p class="preis">Festpreis nach Aufma&szlig;<small>kostenloser Vor-Ort-Termin</small></p>
+        <a href="#angebot">Angebot anfordern</a>
+      </div>
+
+      <div class="mz-kachel" id="bad-ohne-fliesen">
+        <h3>Bad ohne Fliesen &mdash; die Alternative zu Fliesen</h3>
+        <p>Badezimmer ohne Fliesen: der Fliesenersatz, der auf den alten Fliesen bleibt. Bad renovieren ohne Fliesen hei&szlig;t kein Abriss, kein Container, kein Staub &ndash; auch f&uuml;rs G&auml;ste-WC ohne Fliesen.</p>
+        <p class="preis">ab 2.500&nbsp;&euro;<small>G&auml;ste-WC oder Dusche, Bad 6.000&ndash;11.000&nbsp;&euro;</small></p>
+        <a href="#angebot">Angebot anfordern</a>
+      </div>
+
+      <div class="mz-kachel" id="dusche-fugenlos">
+        <h3>Dusche fugenlos sanieren</h3>
+        <p>Fugenlose Dusche mit Verbundabdichtung nach DIN 18534: Dusche ohne Fliesen, Duschwand ohne Fugen, rutschhemmend versiegelt. Dusche sanieren fugenlos &ndash; die Mikrozement Dusche ist in 2&ndash;3 Arbeitstagen fertig.</p>
+        <p class="preis">ab 2.500&nbsp;&euro;<small>meist bis 4.000&nbsp;&euro;</small></p>
+        <a href="#angebot">Angebot anfordern</a>
+      </div>
+
+      <div class="mz-kachel" id="boden-betonoptik">
+        <h3>Boden und Betonoptik &mdash; Mikrozement statt Beton Cir&eacute;</h3>
+        <p>Mikrozement Boden in Betonoptik f&uuml;r Flur, K&uuml;che und Bad: fugenloser Boden Bad, Badezimmerboden ohne Fugen, Bad Betonoptik &ndash; auf Bestandsfliesen oder Estrich. Beton Cir&eacute; ist ein Markenname; wir verlegen Mikrozement im Beton-Look.</p>
+        <p class="preis">120&ndash;180&nbsp;&euro; je m&sup2;<small>ohne neuen Bodenaufbau</small></p>
+        <a href="#angebot">Angebot anfordern</a>
+      </div>
+
     </div>
-    <ul class="mz-thema-punkte">
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Keine Fugen &ndash; kein Schimmel, kein Nachfugen</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Direkt auf die vorhandenen Fliesen, kein Abriss</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Meist 4&ndash;6 Arbeitstage bis zur &Uuml;bergabe</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Festpreis 6.000&ndash;11.000&nbsp;&euro; bis ca. 8&nbsp;m&sup2;, nach Aufma&szlig;</li>
-    </ul>
-    <div class="mz-thema-cta"><a href="#angebot" class="btn btn-primary">Angebot anfordern</a></div>
   </div>
 </section>
-
-<!-- ANZEIGENGRUPPE 2: MIKROZEMENT BAD -->
-<section class="mz-sec hell" id="mikrozement-im-bad">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow" style="color:var(--blue)">Mikrozement im Bad</span>
-      <h2>Mikrozement im Bad &mdash; verlegen lassen vom Fachbetrieb</h2>
-    </div>
-    <div class="mz-thema-text">
-      <p>Mikrozement im Bad bauen wir Schicht f&uuml;r Schicht auf: zuerst eine Haftbr&uuml;cke auf dem gepr&uuml;ften Untergrund, danach zwei bis drei Lagen Mikrozement, zuletzt eine Versiegelung, die die Fl&auml;che dicht und abwischbar macht. Mikrozement Bad hei&szlig;t bei uns: ein Material, ein Gewerk, ein Ansprechpartner von der Anfrage bis zur &Uuml;bergabe. Wer Mikrozement verlegen lassen m&ouml;chte, statt sich selbst mit Grundierung, Armierungsgewebe und Trocknungszeiten zu besch&auml;ftigen, ist bei uns richtig &ndash; wir &uuml;bernehmen jeden Arbeitsschritt. Genauso verlegen wir Mikrozement auf Fliesen, wenn der Untergrund fest sitzt: Abschlagen entf&auml;llt, Anschl&uuml;sse und T&uuml;rh&ouml;hen bleiben, wie sie sind. Eine ganze Badsanierung mit Mikrozement l&auml;uft bei uns nach demselben Ablauf wie eine kleine Fl&auml;che &ndash; nur mit mehr Fl&auml;che und mehr Terminen. Der Werkstoff wird gelegentlich auch als Microzement geschrieben, gemeint ist dasselbe Material. Wir arbeiten damit in M&uuml;lheim an der Ruhr, Essen, Duisburg und Oberhausen.</p>
-    </div>
-    <ul class="mz-thema-punkte">
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Haftbr&uuml;cke, 2&ndash;3 Lagen Mikrozement, Versiegelung</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Ein Ansprechpartner von der Anfrage bis zur &Uuml;bergabe</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Einsatzgebiet M&uuml;lheim, Essen, Duisburg, Oberhausen</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Festpreis nach dem kostenlosen Vor-Ort-Termin</li>
-    </ul>
-    <div class="mz-thema-cta"><a href="#angebot" class="btn btn-primary">Angebot anfordern</a></div>
-  </div>
-</section>
-
-<!-- ANZEIGENGRUPPE 3: BAD OHNE FLIESEN -->
-<section class="mz-sec" id="bad-ohne-fliesen">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Bad ohne Fliesen</span>
-      <h2>Bad ohne Fliesen &mdash; die Alternative zu Fliesen</h2>
-    </div>
-    <div class="mz-thema-text">
-      <p>Wer sein Badezimmer ohne Fliesen sanieren will, sucht meist eine Alternative zu Fliesen, die ohne Abriss auskommt &ndash; kein Container vor der T&uuml;r, kein Staub in der Wohnung, keine zwei Wochen ohne Bad. Mikrozement ist genau dieser Fliesenersatz: 2&ndash;3&nbsp;mm d&uuml;nn, direkt auf den vorhandenen Fliesen, ohne neuen Bodenaufbau. Ein Bad renovieren ohne Fliesen hei&szlig;t bei uns nicht, auf Qualit&auml;t zu verzichten, sondern auf L&auml;rm, Schutt und Wartezeit. Als kleiner Einstieg eignet sich oft ein G&auml;ste-WC ohne Fliesen: &uuml;berschaubare Fl&auml;che, schneller Termin, und Sie sehen am eigenen Objekt, wie sich die Fl&auml;che anf&uuml;hlt und reinigen l&auml;sst. Je nach Gr&ouml;&szlig;e und Zustand des Untergrunds liegt ein Bad zwischen 6.000&nbsp;&euro; und 11.000&nbsp;&euro;, bis ca. 8&nbsp;m&sup2;, ein Boden bei 120&ndash;180&nbsp;&euro; pro m&sup2; &ndash; verbindlich erst nach dem kostenlosen Aufma&szlig;, in M&uuml;lheim, Essen oder Duisburg.</p>
-    </div>
-    <ul class="mz-thema-punkte">
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Kein Abriss, kein Container, kein Bauschutt</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>G&auml;ste-WC als kleiner Einstieg, &uuml;berschaubare Fl&auml;che</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Direkt auf die vorhandenen Fliesen</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Festpreis nach Aufma&szlig;, keine Richtpreise</li>
-    </ul>
-    <div class="mz-thema-cta"><a href="#angebot" class="btn btn-primary">Angebot anfordern</a></div>
-  </div>
-</section>
-
-<!-- ANZEIGENGRUPPE 4: DUSCHE FUGENLOS -->
-<section class="mz-sec hell" id="dusche-fugenlos">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow" style="color:var(--blue)">Dusche fugenlos</span>
-      <h2>Dusche fugenlos sanieren</h2>
-    </div>
-    <div class="mz-thema-text">
-      <p>Eine fugenlose Dusche ist die Stelle im Bad, an der Fugen am schnellsten kaputtgehen &ndash; st&auml;ndig nass, oft schlecht bel&uuml;ftet. Wer seine Dusche sanieren fugenlos plant, bekommt bei uns eine Verbundabdichtung nach DIN&nbsp;18534 unter der Beschichtung, Dichtb&auml;nder in jeder Ecke und Anschlussfuge, dar&uuml;ber Mikrozement Dusche in 2&ndash;3&nbsp;mm und eine rutschhemmende Versiegelung obenauf. Eine Duschwand ohne Fugen sieht nicht nur ruhiger aus, sie hat auch keine Stelle mehr, an der Wasser hinter die Fl&auml;che kommt. Wer eine Dusche ohne Fliesen will, muss daf&uuml;r keine neue Duschkabine kaufen &ndash; wir arbeiten mit dem vorhandenen Grundriss. Eine fugenlose Dusche kostet ab 2.500&nbsp;&euro;, meist bis 4.000&nbsp;&euro;, und ist in 2&ndash;3 Arbeitstagen fertig &ndash; gepr&uuml;ft und abgenommen, bevor wir gehen. Einsatzgebiet: M&uuml;lheim an der Ruhr, Essen, Duisburg, Oberhausen.</p>
-    </div>
-    <ul class="mz-thema-punkte">
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Verbundabdichtung nach DIN 18534</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Dichtb&auml;nder in jeder Ecke und Anschlussfuge</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Rutschhemmende Versiegelung</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Ab 2.500&nbsp;&euro;, meist bis 4.000&nbsp;&euro;, 2&ndash;3 Arbeitstage</li>
-    </ul>
-    <div class="mz-thema-cta"><a href="#angebot" class="btn btn-primary">Angebot anfordern</a></div>
-  </div>
-</section>
-
-<!-- ANZEIGENGRUPPE 5: BODEN / BETONOPTIK -->
-<section class="mz-sec" id="boden-betonoptik">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Boden &amp; Betonoptik</span>
-      <h2>Boden und Betonoptik &mdash; Mikrozement statt Beton Cir&eacute;</h2>
-    </div>
-    <div class="mz-thema-text">
-      <p>Ein Mikrozement Boden verbindet zwei Dinge, die bei Fliesen selten zusammenkommen: eine durchgehende Fl&auml;che und die Optik von rohem Beton. F&uuml;r den fugenloser Boden Bad-Bereich hei&szlig;t das: kein Fugenraster, das die Fl&auml;che zerschneidet, sondern ein Badezimmerboden ohne Fugen, der optisch mit der Wand verschmilzt. Wer nach Bad Betonoptik sucht, meint meist genau dieses Bild &ndash; graue, leicht wolkige Fl&auml;che, matt versiegelt. Ein Hinweis, der uns wichtig ist: Beton Cir&eacute; ist ein Markenname f&uuml;r ein franz&ouml;sisches Kalkspachtel-System. Wir verlegen Mikrozement, kein Markenprodukt &ndash; die Optik ist &auml;hnlich, das Material ist ein anderes, und das sagen wir lieber vorher als hinterher. Ein Mikrozement-Boden kostet 120&ndash;180&nbsp;&euro; pro m&sup2;, auf dem vorhandenen Untergrund verlegt &ndash; ob im Bad, im Flur, in der K&uuml;che oder im Wohnraum, in M&uuml;lheim an der Ruhr, Essen, Duisburg und Oberhausen.</p>
-    </div>
-    <ul class="mz-thema-punkte">
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>120&ndash;180&nbsp;&euro; pro m&sup2;, nach Aufma&szlig;</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Auf Bestandsfliesen, ohne neuen Bodenaufbau</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>F&uuml;r Flur, K&uuml;che, Wohnraum und Bad</li>
-      <li><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Beton Cir&eacute; ist ein Markenname &ndash; wir liefern Mikrozement in Betonoptik</li>
-    </ul>
-    <div class="mz-thema-cta"><a href="#angebot" class="btn btn-primary">Angebot anfordern</a></div>
-  </div>
-</section>
-
-<!--
-  KEYWORD-DECKUNG — per Skript geprüft (kleingeschrieben, Textinhalt ohne
-  Tags, Teilstring-Suche). Ergebnis für alle 25 Begriffe: OK.
-
-  Abschnitt "fugenloses-bad":
-    fugenloses bad, fugenloses badezimmer, badezimmer fugenlos,
-    bad ohne fugen, fugenloser boden
-
-  Abschnitt "mikrozement-im-bad":
-    mikrozement bad, mikrozement verlegen lassen, mikrozement auf fliesen,
-    badsanierung mit mikrozement, microzement
-
-  Abschnitt "bad-ohne-fliesen":
-    badezimmer ohne fliesen, alternative zu fliesen, fliesenersatz,
-    bad renovieren ohne fliesen, gäste-wc ohne fliesen
-
-  Abschnitt "dusche-fugenlos":
-    fugenlose dusche, dusche ohne fliesen, duschwand ohne fugen,
-    dusche sanieren fugenlos, mikrozement dusche
-
-  Abschnitt "boden-betonoptik":
-    mikrozement boden, fugenloser boden bad, badezimmerboden ohne fugen,
-    bad betonoptik, beton ciré
--->
 
 <!-- WO -->
 <section class="mz-sec hell">

@@ -282,7 +282,7 @@
   .mobile-cta{position:fixed;bottom:0;left:0;right:0;z-index:60;display:none;gap:10px;padding:12px 16px;
               background:rgba(11,11,15,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
   .mobile-cta a{flex:1;justify-content:center;font-size:16px;padding:14px}
-  .mobile-cta .call{flex:none;width:52px;padding:0;background:var(--blue)}
+  .mobile-cta .call{flex:1;background:var(--blue)}
   @media(max-width:760px){.mobile-cta{display:flex}body{padding-bottom:76px}}
 
   /* form error + loading */
@@ -298,6 +298,20 @@
   .preiszeile{margin:0 0 18px;font-size:15px;color:rgba(255,255,255,.85);letter-spacing:.2px}
   .preiszeile strong{color:#fff}
   @media(max-width:760px){.preiszeile{font-size:14px;line-height:1.45;margin-bottom:14px}.hero .lead{font-size:16px;line-height:1.5}}
+  .anrufzeile{margin:8px 0 0;font-size:13px;color:rgba(255,255,255,.62)}
+  .rueckruf{margin:18px 0 6px;max-width:520px}
+  .rueckruf label{display:block;font-size:14px;color:rgba(255,255,255,.8);margin-bottom:8px}
+  .rueckruf-zeile{display:flex;gap:8px}
+  .rueckruf-zeile input{flex:1;min-width:0;padding:13px 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;font-family:var(--body);font-size:16px}
+  .rueckruf-zeile input::placeholder{color:rgba(255,255,255,.4)}
+  .rueckruf-zeile .btn{padding:12px 18px;font-size:15px;white-space:nowrap}
+  .rueckruf-ok{display:none;margin:10px 0 0;font-size:14px;color:#9ee7a2}
+  .rueckruf.fertig .rueckruf-zeile{display:none}.rueckruf.fertig .rueckruf-ok{display:block}
+  .rueckruf.fehler input{border-color:#ff5c5c}
+  .frei-label{margin-top:10px;font-size:14px;color:#9ee7a2}
+  .vertrauen-satz{margin:14px 0 4px;font-size:14px;color:rgba(255,255,255,.72)}
+  .btn-wa{background:#25D366;color:#fff}.btn-wa:hover{background:#1ebe5b}
+  .mobile-cta a{font-size:14px;padding:12px 6px;gap:6px;white-space:nowrap}
   /* cookie consent banner */
   .cookie{position:fixed;left:0;right:0;bottom:0;z-index:80;display:none;background:rgba(11,11,15,.97);
           backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:20px 24px}
@@ -652,9 +666,9 @@
     <a href="#top" class="brand"><img src="assets/logo-red.svg" alt="Berisa Bau Logo" /></a>
     <div class="nav-right">
       <div class="badge-top"><span class="dot"></span>Fugenlose Oberflächen · Mülheim a. d. Ruhr &amp; Umgebung</div>
-      <a href="tel:+4915565535408" class="phone">
+      <a href="tel:+4915565535408" class="phone" title="+49 155 6553 5408 · Mo–Fr 8–18, Sa 10–16" data-anruf="kopf">
         <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z"/></svg>
-        <span>+49 1556 5535 408</span>
+        <span>Damir anrufen</span>
       </a>
     </div>
   </div>
@@ -678,14 +692,23 @@
          Handy-Ausgabe derselben Aussage; am Laptop bleibt sie aus. -->
     <p class="ortzeile"><span class="dot"></span>Fugenlose Oberflächen · Mülheim a.&nbsp;d. Ruhr &amp; Umgebung</p>
     <h1>Fugenlos.<br>Ohne Stemmen.<br><span class="under">In wenigen Tagen.</span></h1>
-    <p class="lead">Mikrozement kommt 2&ndash;3&nbsp;mm dünn direkt auf Ihre alten Fliesen. Kein Abschlagen, kein Bauschutt, keine Fugen, die schimmeln. In 60 Sekunden erfassen wir Ihr Vorhaben &ndash; Antwort innerhalb von 24 Stunden.</p>
-    <p class="preiszeile"><strong>Bad komplett 6.000&ndash;11.000&nbsp;&euro;</strong> &middot; Dusche ab 2.500&nbsp;&euro; &middot; Boden 120&ndash;180&nbsp;&euro;/m&sup2; &middot; fester Preis nach Aufmaß</p>
+    <p class="lead">Mikrozement kommt 2&ndash;3&nbsp;mm dünn direkt auf Ihre alten Fliesen. Kein Abschlagen, kein Bauschutt, keine Fugen, die schimmeln. Für Mülheim, Essen, Duisburg und Oberhausen: Aufmaß vor Ort, Festpreis, in 60 Sekunden angefragt.</p>
+    <p class="preiszeile"><strong>Dusche ab 2.500&nbsp;&euro;</strong> &middot; Bad komplett 6.000&ndash;11.000&nbsp;&euro; &middot; Boden 120&ndash;180&nbsp;&euro;/m&sup2; &middot; fester Preis nach Aufmaß</p>
     <div class="hero-cta">
-      <a href="#angebot" class="btn btn-primary">Jetzt Angebot anfordern
+      <a href="#angebot" class="btn btn-primary">Festpreis anfragen
         <svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="tel:+4915565535408" class="btn btn-ghost">Direkt anrufen</a>
+      <a href="tel:+4915565535408" class="btn btn-ghost" data-anruf="hero">Damir anrufen</a>
+    <p class="anrufzeile">Damir Berisa geht selbst ran &middot; Mo&ndash;Fr 8&ndash;18, Sa 10&ndash;16 &middot; in 30 Sekunden wissen Sie, ob wir das machen.</p>
     </div>
+    <form class="rueckruf" id="rueckruf" novalidate>
+      <label for="rueckruf-tel">Oder nur Rückruf: Nummer eintragen, wir rufen zurück.</label>
+      <div class="rueckruf-zeile">
+        <input type="tel" id="rueckruf-tel" name="telefon" placeholder="0176 12345678" autocomplete="tel" inputmode="tel">
+        <button type="submit" class="btn btn-primary">Rückruf</button>
+      </div>
+      <p class="rueckruf-ok" id="rueckruf-ok">Angekommen &ndash; Damir Berisa ruft zurück, meist innerhalb eines Werktags.</p>
+    </form>
     <div class="chips">
       <div class="chip"><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Direkt auf alte Fliesen</div>
       <div class="chip"><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>Bad meist in 4&ndash;6 Tagen</div>
@@ -771,35 +794,35 @@
         <h3>Fugenloses Bad &mdash; ganz ohne Fliesen</h3>
         <p>Ihr Badezimmer fugenlos, direkt auf den vorhandenen Fliesen: ein Bad ohne Fugen hat keinen Schimmel und kein Nachfugen. Fugenloses Badezimmer mit fugenlosem Boden, meist in 4&ndash;6 Arbeitstagen.</p>
         <p class="preis">6.000&ndash;11.000&nbsp;&euro;<small>bis ca. 8&nbsp;m&sup2;, fester Preis nach Aufma&szlig;</small></p>
-        <a href="#angebot">Angebot anfordern</a>
+        <a href="#angebot">Preis fürs ganze Bad</a>
       </div>
 
       <div class="mz-kachel" id="mikrozement-im-bad">
         <h3>Mikrozement im Bad &mdash; verlegen lassen</h3>
         <p>Mikrozement Bad vom Fachbetrieb: Haftbr&uuml;cke, 2&ndash;3 Lagen, Versiegelung &ndash; auch Mikrozement auf Fliesen. Mikrozement verlegen lassen statt selbst probieren: Badsanierung mit Mikrozement (auch &bdquo;Microzement&ldquo; geschrieben) in M&uuml;lheim, Essen, Duisburg, Oberhausen.</p>
         <p class="preis">Festpreis nach Aufma&szlig;<small>kostenloser Vor-Ort-Termin</small></p>
-        <a href="#angebot">Angebot anfordern</a>
+        <a href="#angebot">Termin vor Ort vereinbaren</a>
       </div>
 
       <div class="mz-kachel" id="bad-ohne-fliesen">
         <h3>Bad ohne Fliesen &mdash; die Alternative zu Fliesen</h3>
         <p>Badezimmer ohne Fliesen: der Fliesenersatz, der auf den alten Fliesen bleibt. Bad renovieren ohne Fliesen hei&szlig;t kein Abriss, kein Container, kein Staub &ndash; auch f&uuml;rs G&auml;ste-WC ohne Fliesen.</p>
         <p class="preis">ab 2.500&nbsp;&euro;<small>G&auml;ste-WC oder Dusche, Bad 6.000&ndash;11.000&nbsp;&euro;</small></p>
-        <a href="#angebot">Angebot anfordern</a>
+        <a href="#angebot">Preis für mein Bad</a>
       </div>
 
       <div class="mz-kachel" id="dusche-fugenlos">
         <h3>Dusche fugenlos sanieren</h3>
         <p>Fugenlose Dusche mit Verbundabdichtung nach DIN 18534: Dusche ohne Fliesen, Duschwand ohne Fugen, rutschhemmend versiegelt. Dusche sanieren fugenlos &ndash; die Mikrozement Dusche ist in 2&ndash;3 Arbeitstagen fertig.</p>
         <p class="preis">ab 2.500&nbsp;&euro;<small>meist bis 4.000&nbsp;&euro;</small></p>
-        <a href="#angebot">Angebot anfordern</a>
+        <a href="#angebot">Preis für meine Dusche</a>
       </div>
 
       <div class="mz-kachel" id="boden-betonoptik">
         <h3>Boden und Betonoptik &mdash; Mikrozement statt Beton Cir&eacute;</h3>
         <p>Mikrozement Boden in Betonoptik f&uuml;r Flur, K&uuml;che und Bad: fugenloser Boden Bad, Badezimmerboden ohne Fugen, Bad Betonoptik &ndash; auf Bestandsfliesen oder Estrich. Beton Cir&eacute; ist ein Markenname; wir verlegen Mikrozement im Beton-Look.</p>
         <p class="preis">120&ndash;180&nbsp;&euro; je m&sup2;<small>ohne neuen Bodenaufbau</small></p>
-        <a href="#angebot">Angebot anfordern</a>
+        <a href="#angebot">Preis pro m² anfragen</a>
       </div>
 
     </div>
@@ -812,14 +835,15 @@
     <div class="sec-head">
       <span class="eyebrow">Jetzt loslegen</span>
       <h2>Ihr kostenloses Angebot in 60 Sekunden</h2>
-      <p>Beantworten Sie 4 kurze Fragen – wir melden uns innerhalb von 24 Stunden mit einem individuellen Angebot.</p>
+      <p>Beantworten Sie 4 kurze Fragen &ndash; meist nur Antippen, keine Tipparbeit. Wir melden uns innerhalb von 24 Stunden.</p>
+      <p class="frei-label">Unverbindliche Preiseinschätzung &ndash; auch per Foto, ohne Termin. Der Vor-Ort-Termin ist der freiwillige zweite Schritt.</p>
     </div>
 
     <div class="quiz-card">
       <form id="quiz" novalidate>
         <div class="quiz-top">
           <span class="st" id="stepLabel">Schritt 1 von 4</span>
-          <span class="st" id="stepName">Ihre Fläche</span>
+          <span class="st" id="stepName">Ihr Bereich</span>
         </div>
         <div class="prog"><span id="bar"></span></div>
 
@@ -860,7 +884,7 @@
         </div>
 
         <div class="qstep" data-step="4">
-          <h3>Wohin dürfen wir Ihr Angebot senden?</h3>
+          <h3>Wohin dürfen wir Ihren Festpreis senden?</h3>
           <p class="sub">Ihre Daten werden vertraulich behandelt und nur zur Bearbeitung Ihrer Anfrage genutzt.</p>
           <div class="grid2">
             <div class="field"><label>Vor- & Nachname*</label><input type="text" name="name" placeholder="Max Mustermann" required></div>
@@ -868,7 +892,7 @@
           </div>
           <div class="grid2">
             <div class="field"><label>E-Mail</label><input type="email" name="email" placeholder="name@email.de"></div>
-            <div class="field"><label>PLZ / Ort*</label><input type="text" name="plz" placeholder="45475 Mülheim" required></div>
+            <div class="field"><label>PLZ / Ort</label><input type="text" name="plz" placeholder="45475 Mülheim"></div>
           </div>
           <div class="field"><label>Kurz zum Projekt (optional)</label><textarea name="nachricht" rows="2" placeholder="z. B. Bad ca. 8 m², alte Fliesen bleiben, Wunschton grau"></textarea></div>
           <div class="field">
@@ -886,6 +910,7 @@
 
         <div class="formerr" id="formerr">Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an: <a href="tel:+4915565535408">+49 1556 5535 408</a>.</div>
 
+        <p class="vertrauen-satz">Kein Verkäufer, kein Druck: Sie sprechen direkt mit Damir Berisa &ndash; nicht mit einem Callcenter.</p>
         <div class="qnav">
           <button type="button" class="back" id="back" disabled>← Zurück</button>
           <button type="button" class="btn btn-primary" id="next">Weiter →</button>
@@ -894,10 +919,10 @@
 
       <div class="done" id="done">
         <div class="ok"><svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></div>
-        <h3>Vielen Dank!</h3>
-        <p>Ihre Anfrage ist bei uns eingegangen. Wir melden uns innerhalb von 24 Stunden mit Ihrem persönlichen Angebot.</p>
+        <h3>Angekommen.</h3>
+        <p>Damir Berisa meldet sich persönlich &ndash; meist innerhalb eines Werktags, spätestens nach 24 Stunden.</p>
         <div class="done-actions">
-          <a href="tel:+4915565535408" class="btn btn-primary">Oder jetzt direkt anrufen</a>
+          <a href="tel:+4915565535408" class="btn btn-primary" data-anruf="danke">Oder jetzt direkt anrufen</a>
           <a href="https://www.berisabau.de" target="_blank" rel="noopener" class="btn btn-ghost">Mehr über uns auf berisabau.de</a>
         </div>
       </div>
@@ -1216,7 +1241,7 @@
 <!-- COOKIE CONSENT -->
 <div class="cookie" id="cookie">
   <div class="cwrap">
-    <p>Wir verwenden Cookies für anonyme Statistik und Marketing (z.&nbsp;B. Google&nbsp;Ads), um unsere Werbung zu verbessern. Notwendige Funktionen (z.&nbsp;B. das Anfrageformular) funktionieren immer. Mehr in der <a href="https://www.berisabau.de/legal/privacy" target="_blank" rel="noopener" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+    <p>Cookies nur für Statistik und Werbemessung. Das Formular funktioniert auch ohne. <a href="datenschutz.html">Datenschutz</a></p>
     <div class="cbtns">
       <button type="button" class="cb decline" id="ckDecline">Nur notwendige</button>
       <button type="button" class="cb accept" id="ckAccept">Alle akzeptieren</button>
@@ -1226,8 +1251,9 @@
 
 <!-- STICKY MOBILE CTA -->
 <div class="mobile-cta">
-  <a href="tel:+4915565535408" class="btn btn-blue call"><svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z"/></svg></a>
-  <a href="#angebot" class="btn btn-primary">Angebot anfordern</a>
+  <a href="tel:+4915565535408" class="btn btn-blue call" data-anruf="leiste"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>Anrufen</a>
+  <a href="https://wa.me/4915565535408?text=Hallo%20Herr%20Berisa%2C%20ich%20interessiere%20mich%20f%C3%BCr%20Mikrozement%20im%20Bad." class="btn btn-wa" data-anruf="whatsapp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2 .6 2.7.5a2.3 2.3 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c0-.1-.2-.2-.4-.3z"/></svg>WhatsApp</a>
+  <a href="#angebot" class="btn btn-primary">Festpreis</a>
 </div>
 
 <script>
@@ -1357,6 +1383,43 @@
     document.getElementById('ckDecline').addEventListener('click',function(){ close('necessary'); });
   })();
 
+  /* Anruf- und WhatsApp-Klicks messen (seit 13.09.2026). Vorher stand
+     "0 Anrufe" im Konto, weil nur der Anruf-Knopf in der Anzeige gezaehlt
+     wurde -- die vier tel:-Links der Seite nie. */
+  document.querySelectorAll('[data-anruf]').forEach(function(a){
+    a.addEventListener('click',function(){
+      var wo=a.getAttribute('data-anruf');
+      if(typeof gtag==='function'){ gtag('event', wo==='whatsapp'?'whatsapp_klick':'anruf_klick', {stelle:wo}); }
+    });
+  });
+
+  /* Ein-Feld-Rueckruf unter dem Hero: nur die Nummer, sonst nichts.
+     Geht denselben Weg wie die grosse Anfrage (Worker + E-Mail). */
+  (function(){
+    var f=document.getElementById('rueckruf'); if(!f) return;
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var tel=(f.telefon.value||'').replace(/\s+/g,'');
+      if(tel.replace(/\D/g,'').length<8){ f.classList.add('fehler'); return; }
+      f.classList.remove('fehler');
+      var btn=f.querySelector('button'); btn.disabled=true; btn.textContent='…';
+      var d={name:'Rückruf gewünscht', telefon:tel, bereich:'Rückruf (Kurzformular)'};
+      var gclid=holeGclid();
+      meldeAnfrage(d, gclid).catch(function(){ return []; }).then(function(){
+        var payload={'Name':d.name,'Telefon':tel,'Bereich':d.bereich,'Herkunft':CONFIG.quelle,
+          'Klick-Kennung':gclid||'–','Anzeige':holeAnzeige()||'–',
+          '_subject':'📞 Rückruf-Wunsch: '+tel,'_template':'box','_captcha':'false'};
+        return fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+      }).then(function(r){
+        if(!r || !r.ok) throw new Error('rueckruf');
+        f.classList.add('fertig'); fireConversion();
+        if(typeof gtag==='function'){ gtag('event','rueckruf_gesendet'); }
+      }).catch(function(){
+        btn.disabled=false; btn.textContent='Rückruf'; f.classList.add('fehler');
+      });
+    });
+  })();
+
   function fireConversion(){
     if(CONFIG.googleAdsId && CONFIG.conversionLabel && typeof gtag==='function'){
       gtag('event','conversion',{'send_to':CONFIG.googleAdsId+'/'+CONFIG.conversionLabel});
@@ -1442,7 +1505,7 @@
       back=document.getElementById('back'),
       next=document.getElementById('next'),
       done=document.getElementById('done'),
-      names=['Ihre Fläche','Größe','Zeitrahmen','Ihre Kontaktdaten'],
+      names=['Ihr Bereich','Größe','Zeitrahmen','Ihr Angebot'],
       cur=0, total=steps.length, data={};
 
   /* Messung der Quiz-Schritte (seit 13.09.2026): welcher Schritt erreicht
@@ -1474,7 +1537,7 @@
     lbl.textContent='Schritt '+(cur+1)+' von '+total;
     nm.textContent=names[cur];
     back.disabled = cur===0;
-    next.textContent = cur===total-1 ? 'Angebot anfordern ✓' : 'Weiter →';
+    next.textContent = cur===total-1 ? 'Festpreis anfragen ✓' : 'Weiter →';
   }
 
   form.querySelectorAll('.opts').forEach(function(grp){
@@ -1592,7 +1655,7 @@
   var formerr=document.getElementById('formerr');
 
   function submit(){
-    var req=['name','telefon','plz','consent'], ok=true;
+    var req=['name','telefon','consent'], ok=true;
     req.forEach(function(n){
       var f=form.querySelector('[name="'+n+'"]');
       var bad = f.type==='checkbox' ? !f.checked : !f.value.trim();
@@ -1664,7 +1727,7 @@
       done.scrollIntoView({behavior:'smooth',block:'center'});
     })
     .catch(function(){
-      next.classList.remove('loading'); next.textContent='Angebot anfordern ✓';
+      next.classList.remove('loading'); next.textContent='Festpreis anfragen ✓';
       formerr.classList.add('show');
     });
   }

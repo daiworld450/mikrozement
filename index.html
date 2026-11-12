@@ -1063,9 +1063,8 @@
              tatsaechlich einwilligt: die Zustimmung im Formular und das
              Cookie-Banner. Die zeigen weiter auf die oertliche
              datenschutz.html, weil nur sie beschreibt, was auf DIESER
-             Seite passiert - Foto-Upload ueber Cloudflare, Meldung per
-             Telegram, Versand ueber FormSubmit, Google Ads mit Consent
-             Mode. Auf berisabau.de/legal/privacy steht davon nichts (2.831
+             Seite passiert - Anfrage und Foto-Upload auf dem eigenen Server,
+             Google Ads mit Consent Mode. Auf berisabau.de/legal/privacy steht davon nichts (2.831
              Zeichen, geprueft am 10.09.2026). Eine Einwilligung, die auf
              einen Text zeigt, der die Verarbeitung nicht nennt, ist keine.
 
@@ -1115,12 +1114,10 @@
      KONFIGURATION  –  hier alles Wichtige zentral einstellen
      ---------------------------------------------------------------------
      Diese Seite ist die Landingpage der Google-Ads-Kampagne "Mikrozement".
-     Sie teilt sich Formular-Endpunkt, Conversion-ID und Worker-Meldung mit
-     der Hauptlandingpage (index.html) – geändert wird an einer Stelle,
-     dann in beiden Dateien nachziehen.
+     Anfragen und Fotos gehen seit 12.11.2026 direkt an den eigenen Server
+     (berisabau.de, Hetzner): kein Cloudflare, kein Telegram, kein FormSubmit.
 
-     leadEmail       : E-Mail, an die die Anfragen gehen (über FormSubmit).
-     formEndpoint    : Versand-Endpunkt. Standard: FormSubmit (kein Konto nötig).
+     anfrageEndpoint : Annahme-Adresse auf dem eigenen Server (POST /anfrage-senden).
      googleAdsId     : z. B. 'AW-123456789'  (aus Google Ads → Conversions)
      conversionLabel : z. B. 'AbCdEfGhIj'   (Label der Conversion-Aktion)
                        Solange leer, wird KEIN Tracking geladen (Seite bleibt nutzbar).
@@ -1128,8 +1125,7 @@
                        liegt beim Webhoster – diese Datei nie ungeprüft hochladen.
      ===================================================================== */
   var CONFIG = {
-    leadEmail:       'info@berisabau.de',
-    formEndpoint:    'https://formsubmit.co/ajax/info@berisabau.de',
+    anfrageEndpoint: 'https://www.berisabau.de/anfrage-senden', // eigener Server (Hetzner); www direkt, eine Weiterleitung wuerde das Absenden zerstoeren
     googleAdsId:     'AW-18326204248',       // Google Ads Conversion-ID
     conversionLabel: 'dkNlCKmz-OQcENjezqJE', // Label der Conversion-Aktion
     ga4Id:           'G-G6RT5FR44V',         // Google Analytics 4, dieselbe
@@ -1139,16 +1135,7 @@
                                              // die ganze Mikrozement-Werbung
                                              // hierher zeigt.
 
-    /* Sofort-Meldung per WhatsApp (google-ads/worker).
-       Beide Felder leer lassen = ausgeschaltet, dann ändert sich nichts.
-       Der Schlüssel steht hier zwangsläufig im Quelltext der Seite und ist
-       deshalb kein echtes Geheimnis - er öffnet auch nichts weiter, sondern
-       nimmt nur Anfragen entgegen. */
-    anfrageEndpoint: 'https://ads-berichte.werkbuch-berisabau.workers.dev/anfrage',
-    anfrageSchluessel: 'd23d2d97fabbd68ed2df747fb24f9702',
-
-    /* Kennzeichnet die Herkunft in der E-Mail und in der WhatsApp-Meldung,
-       damit Anfragen dieser Kampagne von denen der Hauptseite zu trennen sind. */
+    /* Kennzeichnet die Herkunft der Anfrage im Adminbereich. */
     quelle: 'Landingpage Mikrozement'
   };
 
@@ -1247,7 +1234,7 @@
   });
 
   /* Ein-Feld-Rueckruf unter dem Hero: nur die Nummer, sonst nichts.
-     Geht denselben Weg wie die grosse Anfrage (Worker + E-Mail). */
+     Geht denselben Weg wie die grosse Anfrage (eigener Server). */
   (function(){
     var f=document.getElementById('rueckruf'); if(!f) return;
     f.addEventListener('submit',function(e){
@@ -1258,12 +1245,8 @@
       var btn=f.querySelector('button'); btn.disabled=true; btn.textContent='…';
       var d={name:'Rückruf gewünscht', telefon:tel, bereich:'Rückruf (Kurzformular)'};
       var gclid=holeGclid();
-      meldeAnfrage(d, gclid).catch(function(){ return []; }).then(function(){
-        var payload={'Name':d.name,'Telefon':tel,'Bereich':d.bereich,'Herkunft':CONFIG.quelle,
-          'Klick-Kennung':gclid||'–','Anzeige':holeAnzeige()||'–',
-          '_subject':'📞 Rückruf-Wunsch: '+tel,'_template':'box','_captcha':'false'};
-        return fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
-      }).then(function(r){
+      sendeAnfrage({name:d.name, telefon:tel, bereich:d.bereich, quelle:CONFIG.quelle, anzeige:holeAnzeige()||'', gclid:gclid||'', rueckruf:true})
+      .then(function(r){
         if(!r || !r.ok) throw new Error('rueckruf');
         f.classList.add('fertig'); fireConversion();
         if(typeof gtag==='function'){ gtag('event','rueckruf_gesendet'); }
@@ -1425,10 +1408,8 @@
      die Beurteilung eines Raums mehr als genug, und der Upload ist in
      ein paar Sekunden durch.
 
-     Die Bilder gehen NICHT ueber FormSubmit: dessen AJAX-Weg nimmt nur
-     JSON, keine Dateien. Sie gehen an unseren eigenen Worker, der sie
-     ablegt, sofort per Telegram aufs Handy schickt und die Adressen
-     zurueckgibt — die stehen dann als Links in der E-Mail.
+     Die Bilder gehen zusammen mit den Angaben an den eigenen Server, der
+     sie privat ablegt. Im Adminbereich sind sie unter der Anfrage sichtbar.
      ================================================================== */
   var MAX_FOTOS = 4, MAX_KANTE = 1600, fotos = [];
   var fotoeingabe = document.getElementById('fotoeingabe');
@@ -1526,52 +1507,17 @@
     next.classList.add('loading');
     next.textContent = fotos.length ? 'Fotos werden übertragen' : 'Wird gesendet';
 
-    /* Reihenfolge mit Absicht: erst der eigene Worker, dann die E-Mail.
-       Der Worker legt die Fotos ab und gibt ihre Adressen zurueck — die
-       gehoeren in dieselbe E-Mail, sonst muesste man zwei Nachrichten
-       zusammensuchen. Er meldet die Anfrage ausserdem sofort per Telegram
-       aufs Handy. Scheitert er, geht die E-Mail trotzdem raus: der Kontakt
-       ist wichtiger als das Bild. */
-    meldeAnfrage(data, gclid)
-    .then(function(fotoAdressen){
-      next.textContent='Wird gesendet';
-
-      // Aufbau der E-Mail: zuerst, wen man anrufen muss, danach worum es
-      // geht. Die Herkunft und die Klick-Kennung stehen zuletzt — sie sind
-      // fuer die Auswertung da, nicht fuer den Rueckruf.
-      var payload={
-        'Name':         data.name       || '',
-        'Telefon':      data.telefon    || '',
-        'E-Mail':       data.email      || '–',
-        'PLZ / Ort':    data.plz        || '',
-        'Bereich':      data.bereich    || '–',
-        'Fläche':       data.flaeche    || '–',
-        'Zeitrahmen':   data.zeitrahmen || '–',
-        'Projektinfo':  data.nachricht  || '–'
-      };
-
-      fotoAdressen.forEach(function(adresse, i){ payload['Foto '+(i+1)] = adresse; });
-      if(fotos.length && fotoAdressen.length < fotos.length){
-        payload['Fotos'] = 'Der Kunde hat '+fotos.length+' Foto(s) angehängt, die Übertragung ist gescheitert. Bitte beim Rückruf danach fragen.';
-      }
-
-      payload['Herkunft']       = CONFIG.quelle;
-      payload['Klick-Kennung']  = gclid || '–';
-      payload['Anzeige']        = holeAnzeige() || '–';
-      payload['_subject']       = '🔔 Anfrage: '+(data.name||'ohne Namen')
-                                + (data.plz ? ' · '+data.plz : '')
-                                + ' · '+(data.bereich||'Mikrozement')
-                                + (fotoAdressen.length ? ' · 📷 '+fotoAdressen.length : '');
-      payload['_template']      = 'box';
-      payload['_captcha']       = 'false';
-
-      return fetch(CONFIG.formEndpoint,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify(payload)
+    /* Alles geht in EINEM Aufruf an den eigenen Server: Angaben und, falls angehaengt, die im Browser verkleinerten Fotos.
+       Der Server speichert die Fotos privat (nur im Adminbereich sichtbar) und meldet erst "ok", wenn alles gespeichert ist. */
+    Promise.resolve()
+    .then(function(){
+      return sendeAnfrage({
+        name:data.name||'', telefon:data.telefon||'', email:data.email||'', plz:data.plz||'',
+        bereich:data.bereich||'', flaeche:data.flaeche||'', zeitrahmen:data.zeitrahmen||'', nachricht:data.nachricht||'',
+        quelle:CONFIG.quelle, anzeige:holeAnzeige()||'', gclid:gclid||'', rueckruf:false,
+        foto_daten:fotos.map(function(f){ return { dateiname:f.dateiname, typ:f.typ, daten:f.vorschau.replace(/^data:[^,]*,/,'') }; })
       });
     })
-    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok,j:j}; }); })
     .then(function(res){
       if(!res.ok){ throw new Error('send failed'); }
       fireConversion();
@@ -1585,44 +1531,13 @@
     });
   }
 
-  /* Meldet die Anfrage zusätzlich an den Worker, der sie per WhatsApp
-     weiterschickt. Bewusst nach dem erfolgreichen E-Mail-Versand und ohne
-     Rückwirkung: Scheitert die Meldung, hat der Besucher trotzdem abgesendet
-     und die E-Mail ist raus. Deshalb kein await und ein leeres catch. */
-  function meldeAnfrage(data, gclid){
-    if(!CONFIG.anfrageEndpoint || !CONFIG.anfrageSchluessel) return Promise.resolve([]);
-
-    var koerper = {
-      schluessel: CONFIG.anfrageSchluessel,
-      name:       data.name      || '',
-      telefon:    data.telefon   || '',
-      email:      data.email     || '',
-      ort:        data.plz       || '',
-      projekt:    'Mikrozement: '+(data.bereich||'')+(data.flaeche?' ('+data.flaeche+')':''),
-      zeitrahmen: data.zeitrahmen|| '',
-      nachricht:  data.nachricht || '',
-      quelle:     CONFIG.quelle + (holeAnzeige() ? ' · ' + holeAnzeige() : ''),
-      gclid:      gclid || '',
-      fotos:      fotos.map(function(f){
-                    return { dateiname:f.dateiname, typ:f.typ, daten:f.vorschau.replace(/^data:[^,]*,/,'') };
-                  })
-    };
-
-    // Nie blockieren: Ein haengender Worker darf die Anfrage nicht kosten.
-    // Nach 25 Sekunden geht es ohne Fotoadressen weiter — bei vier Bildern
-    // ueber Mobilfunk ist das reichlich bemessen.
-    var frist = new Promise(function(fertig){ setTimeout(function(){ fertig([]); }, 25000); });
-
-    var senden = fetch(CONFIG.anfrageEndpoint,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(koerper)
-    })
-    .then(function(r){ return r.ok ? r.json() : {}; })
-    .then(function(j){ return Array.isArray(j.fotos) ? j.fotos : []; })
-    .catch(function(){ return []; });
-
-    return Promise.race([senden, frist]);
+  /* Absendeweg: eigener Server (POST /anfrage-senden). Erfolg erst, wenn der Server die Anfrage gespeichert hat. */
+  function sendeAnfrage(koerper){
+    koerper.kanal='mikrozement'; koerper.consent=true;
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    var timer=setTimeout(function(){ if(ctrl) ctrl.abort(); },60000);
+    return fetch(CONFIG.anfrageEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(koerper),signal:ctrl?ctrl.signal:undefined})
+      .then(function(r){ clearTimeout(timer); return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok && j && j.ok===true, id:j&&j.anfrage_id}; }); });
   }
 
   render();
